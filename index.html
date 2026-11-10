@@ -186,13 +186,13 @@
       <p class="text-xs text-slate-300 hidden sm:block">Pastikan opsi <b>Background Graphics (Grafis Latar Belakang)</b> dicentang pada pengaturan printer Anda.</p>
     </div>
     <div class="flex items-center gap-2">
-      <button onclick="openBrowserPrintDialog()" class="px-4 py-1.5 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-lg flex items-center gap-1.5 shadow cursor-pointer">
+      <button type="button" onclick="openBrowserPrintDialog()" class="px-4 py-1.5 bg-brand-600 hover:bg-brand-500 text-white text-xs font-bold rounded-lg flex items-center gap-1.5 shadow cursor-pointer">
         <i data-lucide="printer" class="w-4 h-4"></i> Dialog Print Browser
       </button>
-      <button onclick="downloadDirectPDF()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg flex items-center gap-1.5 shadow cursor-pointer">
+      <button type="button" onclick="downloadDirectPDF()" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-lg flex items-center gap-1.5 shadow cursor-pointer">
         <i data-lucide="file-down" class="w-4 h-4"></i> Unduh File PDF (.pdf)
       </button>
-      <button onclick="exitPrintMode()" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-lg flex items-center gap-1 cursor-pointer">
+      <button type="button" onclick="exitPrintMode()" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-lg flex items-center gap-1 cursor-pointer">
         <i data-lucide="arrow-left" class="w-4 h-4"></i> Kembali ke Aplikasi
       </button>
     </div>
@@ -223,10 +223,10 @@
 
       <!-- Tab Switcher Login -->
       <div class="grid grid-cols-2 gap-1 p-1 bg-slate-100 rounded-xl mb-6">
-        <button id="tabAdminBtn" onclick="switchLoginTab('admin')" class="py-2 text-xs font-bold rounded-lg bg-white text-brand-600 shadow-xs transition">
+        <button type="button" id="tabAdminBtn" onclick="switchLoginTab('admin')" class="py-2 text-xs font-bold rounded-lg bg-white text-brand-600 shadow-xs transition">
           Operator / Admin
         </button>
-        <button id="tabSiswaBtn" onclick="switchLoginTab('siswa')" class="py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 transition">
+        <button type="button" id="tabSiswaBtn" onclick="switchLoginTab('siswa')" class="py-2 text-xs font-bold rounded-lg text-slate-500 hover:text-slate-800 transition">
           Portal Siswa
         </button>
       </div>
@@ -296,19 +296,19 @@
       </div>
 
       <nav id="sidebarNav" class="flex-1 p-3 space-y-1">
-        <button onclick="switchMenu('dashboard')" data-menu="dashboard" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition bg-brand-600 text-white">
+        <button type="button" onclick="switchMenu('dashboard')" data-menu="dashboard" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition bg-brand-600 text-white">
           <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
         </button>
-        <button onclick="switchMenu('peserta')" data-menu="peserta" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition hover:bg-slate-800">
+        <button type="button" onclick="switchMenu('peserta')" data-menu="peserta" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition hover:bg-slate-800">
           <i data-lucide="users" class="w-4 h-4"></i> Data Peserta
         </button>
-        <button onclick="switchMenu('excel')" data-menu="excel" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition hover:bg-slate-800">
+        <button type="button" onclick="switchMenu('excel')" data-menu="excel" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition hover:bg-slate-800">
           <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Impor & Ekspor Excel
         </button>
-        <button onclick="switchMenu('studio-cetak')" data-menu="studio-cetak" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition hover:bg-slate-800">
+        <button type="button" onclick="switchMenu('studio-cetak')" data-menu="studio-cetak" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition hover:bg-slate-800">
           <i data-lucide="printer" class="w-4 h-4"></i> Studio Cetak Kartu
         </button>
-        <button onclick="switchMenu('pengaturan')" data-menu="pengaturan" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition hover:bg-slate-800">
+        <button type="button" onclick="switchMenu('pengaturan')" data-menu="pengaturan" class="nav-btn w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition hover:bg-slate-800">
           <i data-lucide="settings-2" class="w-4 h-4"></i> Kop & Pengaturan
         </button>
       </nav>
@@ -321,7 +321,7 @@
             <p id="userRoleLabel" class="text-[10px] text-slate-400">Operator Sekolah</p>
           </div>
         </div>
-        <button onclick="handleLogout()" title="Keluar" class="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-lg transition">
+        <button type="button" onclick="handleLogout()" title="Keluar" class="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-lg transition">
           <i data-lucide="log-out" class="w-4 h-4"></i>
         </button>
       </div>
@@ -338,7 +338,7 @@
           <span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-emerald-500"></span> SAS 2026/2027
           </span>
-          <button onclick="handleLogout()" class="md:hidden p-2 text-slate-500 hover:text-rose-600 rounded-lg border border-slate-200">
+          <button type="button" onclick="handleLogout()" class="md:hidden p-2 text-slate-500 hover:text-rose-600 rounded-lg border border-slate-200">
             <i data-lucide="log-out" class="w-4 h-4"></i>
           </button>
         </div>
@@ -394,13 +394,13 @@
               <p class="text-xs text-slate-500 mt-0.5">Kelola data peserta, unggah file Excel kolektif, atau langsung cetak Kartu Ujian & Kartu NISN.</p>
             </div>
             <div class="flex flex-wrap gap-2.5">
-              <button onclick="openPesertaModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition">
+              <button type="button" onclick="openPesertaModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition">
                 <i data-lucide="user-plus" class="w-4 h-4"></i> Tambah Peserta
               </button>
-              <button onclick="switchMenu('excel')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition">
+              <button type="button" onclick="switchMenu('excel')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition">
                 <i data-lucide="file-spreadsheet" class="w-4 h-4"></i> Impor dari Excel
               </button>
-              <button onclick="switchMenu('studio-cetak')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition">
+              <button type="button" onclick="switchMenu('studio-cetak')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition">
                 <i data-lucide="printer" class="w-4 h-4"></i> Buka Studio Cetak
               </button>
             </div>
@@ -421,13 +421,13 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-2">
-              <button id="btnBulkDeleteSelected" onclick="openBulkDeleteModal('selected')" class="hidden px-3 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition">
+              <button type="button" id="btnBulkDeleteSelected" onclick="openBulkDeleteModal('selected')" class="hidden px-3 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition">
                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus Terpilih (<span id="selectedCountBadge">0</span>)
               </button>
-              <button onclick="openBulkDeleteModal('all')" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition">
+              <button type="button" onclick="openBulkDeleteModal('all')" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition">
                 <i data-lucide="trash" class="w-3.5 h-3.5"></i> Hapus Semua
               </button>
-              <button onclick="openPesertaModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition">
+              <button type="button" onclick="openPesertaModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition">
                 <i data-lucide="plus" class="w-4 h-4"></i> Tambah Peserta
               </button>
             </div>
@@ -472,10 +472,10 @@
                 </p>
               </div>
               <div class="space-y-2.5 pt-2">
-                <button onclick="downloadExcelTemplate()" class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs flex items-center justify-center gap-2 transition">
+                <button type="button" onclick="downloadExcelTemplate()" class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-xs flex items-center justify-center gap-2 transition">
                   <i data-lucide="download" class="w-4 h-4"></i> Download Template Excel (.xlsx)
                 </button>
-                <button onclick="exportAllDataToExcel()" class="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition">
+                <button type="button" onclick="exportAllDataToExcel()" class="w-full py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl flex items-center justify-center gap-2 transition">
                   <i data-lucide="table" class="w-4 h-4"></i> Ekspor Semua Data ke Excel
                 </button>
               </div>
@@ -509,8 +509,8 @@
                 <p class="text-xs text-slate-500">Terdeteksi <span id="excelPreviewCount" class="font-bold text-brand-600">0</span> baris data siswa siap diimpor.</p>
               </div>
               <div class="flex items-center gap-2">
-                <button onclick="cancelExcelImport()" class="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Batal</button>
-                <button onclick="commitExcelImport()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs">
+                <button type="button" onclick="cancelExcelImport()" class="px-3 py-1.5 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Batal</button>
+                <button type="button" onclick="commitExcelImport()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs">
                   <i data-lucide="check" class="w-4 h-4"></i> Simpan ke Database
                 </button>
               </div>
@@ -548,7 +548,7 @@
               <div>
                 <label class="block text-[11px] font-semibold text-slate-600 mb-0.5">Jenis Kartu:</label>
                 <select id="printJenisFilter" onchange="generatePrintCards()" class="text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 font-medium">
-                  <option value="ALL">Semua (Sesuai Jenis Ujian Siswa)</option>
+                  <option value="ALL">Semua Jenis Ujian (Sesuai Data Siswa)</option>
                   <option value="NISN">Kartu NISN Standar (Tanpa Kop Sekolah)</option>
                   <option value="SAS">Cetak Seragam: Kartu SAS</option>
                   <option value="PTS">Cetak Seragam: Kartu PTS</option>
@@ -559,17 +559,17 @@
               <div>
                 <label class="block text-[11px] font-semibold text-slate-600 mb-0.5">Layout Kertas A4:</label>
                 <select id="printLayoutMode" onchange="generatePrintCards()" class="text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white text-slate-700">
-                  <option value="4">Standar Presisi (94x62mm / CR80)</option>
-                  <option value="8">Kompak Hemat Kertas (8 Kartu / A4)</option>
+                  <option value="4">4 Kartu per Halaman (Besar / Standar)</option>
+                  <option value="8">8 Kartu per Halaman (Kompak / Hemat)</option>
                 </select>
               </div>
             </div>
 
             <div class="flex flex-wrap items-center gap-2">
-              <button onclick="triggerPrintNow()" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-2 transition">
+              <button type="button" onclick="triggerPrintNow()" class="px-4 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-2 transition">
                 <i data-lucide="printer" class="w-4 h-4"></i> Cetak Sekarang (Print / PDF)
               </button>
-              <button id="btnDownloadPdf" onclick="downloadDirectPDF()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-2 transition">
+              <button type="button" id="btnDownloadPdf" onclick="downloadDirectPDF()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md flex items-center gap-2 transition">
                 <i data-lucide="file-down" class="w-4 h-4"></i> Unduh PDF Langsung (.pdf)
               </button>
             </div>
@@ -582,69 +582,107 @@
           </div>
         </section>
 
-        <!-- ================= 5. MENU PENGATURAN SEKOLAH & KOP ================= -->
+        <!-- ================= 5. MENU PENGATURAN SEKOLAH, KOP & FIREBASE RULES ================= -->
         <section id="section-pengaturan" class="hidden space-y-6">
-          <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs max-w-3xl space-y-5">
-            <div>
-              <h3 class="font-bold text-slate-800 text-base font-display">Identitas Sekolah & Kop Surat Kartu</h3>
-              <p class="text-xs text-slate-500">Konfigurasi ini akan tampil pada bagian kop atas setiap kartu ujian yang dicetak (tidak tampil pada Kartu NISN Standar).</p>
-            </div>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Form Identitas & Kop Sekolah -->
+            <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-5">
+              <div>
+                <h3 class="font-bold text-slate-800 text-base font-display">Identitas Sekolah & Kop Surat Kartu</h3>
+                <p class="text-xs text-slate-500">Konfigurasi ini akan tampil pada bagian kop atas setiap kartu ujian yang dicetak (tidak tampil pada Kartu NISN Standar).</p>
+              </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Nama Instansi / Yayasan</label>
-                <input type="text" id="cfgInstansi" value="KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI" class="w-full p-2 border border-slate-200 rounded-lg">
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Nama Sekolah / Madrasah</label>
-                <input type="text" id="cfgNamaSekolah" value="SMA NEGERI 1 GRAHA TELADAN" class="w-full p-2 border border-slate-200 rounded-lg font-bold">
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">NPSN / NSS</label>
-                <input type="text" id="cfgNpsn" value="20108921 / NSS: 301045" class="w-full p-2 border border-slate-200 rounded-lg">
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Tahun Ajaran & Semester</label>
-                <input type="text" id="cfgTahunAjaran" value="Tahun Pelajaran 2026/2027 (Semester Ganjil)" class="w-full p-2 border border-slate-200 rounded-lg">
-              </div>
-              <div class="md:col-span-2">
-                <label class="block font-semibold text-slate-700 mb-1">Alamat Lengkap & Kontak</label>
-                <input type="text" id="cfgAlamat" value="Jl. Merdeka Belajar No. 10 Jakarta Pusat • Telp. (021) 500-123" class="w-full p-2 border border-slate-200 rounded-lg">
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Nama Kepala Sekolah</label>
-                <input type="text" id="cfgKepsekNama" value="Dr. H. Sulaiman, M.Pd." class="w-full p-2 border border-slate-200 rounded-lg">
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">NIP Kepala Sekolah</label>
-                <input type="text" id="cfgKepsekNip" value="19720415 199802 1 003" class="w-full p-2 border border-slate-200 rounded-lg">
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Kota / Tanggal Kartu Ditetapkan</label>
-                <input type="text" id="cfgKotaTgl" value="Jakarta, 10 November 2026" class="w-full p-2 border border-slate-200 rounded-lg">
-              </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Logo Sekolah (Upload File / URL)</label>
-                <div class="flex gap-1.5">
-                  <input type="text" id="cfgLogoUrl" placeholder="Kosongkan untuk logo default" class="flex-1 p-2 border border-slate-200 rounded-lg">
-                  <button type="button" onclick="document.getElementById('cfgLogoFile').click()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-medium text-slate-700 shrink-0">Upload</button>
-                  <input type="file" id="cfgLogoFile" accept="image/*" class="hidden" onchange="handleUploadSchoolAsset(event, 'cfgLogoUrl')">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Nama Instansi / Yayasan</label>
+                  <input type="text" id="cfgInstansi" value="KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI" class="w-full p-2 border border-slate-200 rounded-lg">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Nama Sekolah / Madrasah</label>
+                  <input type="text" id="cfgNamaSekolah" value="SMA NEGERI 1 GRAHA TELADAN" class="w-full p-2 border border-slate-200 rounded-lg font-bold">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">NPSN / NSS</label>
+                  <input type="text" id="cfgNpsn" value="20108921 / NSS: 301045" class="w-full p-2 border border-slate-200 rounded-lg">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Tahun Ajaran & Semester</label>
+                  <input type="text" id="cfgTahunAjaran" value="Tahun Pelajaran 2026/2027 (Semester Ganjil)" class="w-full p-2 border border-slate-200 rounded-lg">
+                </div>
+                <div class="md:col-span-2">
+                  <label class="block font-semibold text-slate-700 mb-1">Alamat Lengkap & Kontak</label>
+                  <input type="text" id="cfgAlamat" value="Jl. Merdeka Belajar No. 10 Jakarta Pusat • Telp. (021) 500-123" class="w-full p-2 border border-slate-200 rounded-lg">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Nama Kepala Sekolah</label>
+                  <input type="text" id="cfgKepsekNama" value="Dr. H. Sulaiman, M.Pd." class="w-full p-2 border border-slate-200 rounded-lg">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">NIP Kepala Sekolah</label>
+                  <input type="text" id="cfgKepsekNip" value="19720415 199802 1 003" class="w-full p-2 border border-slate-200 rounded-lg">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Kota / Tanggal Kartu Ditetapkan</label>
+                  <input type="text" id="cfgKotaTgl" value="Jakarta, 10 November 2026" class="w-full p-2 border border-slate-200 rounded-lg">
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Logo Sekolah (Upload File / URL)</label>
+                  <div class="flex gap-1.5">
+                    <input type="text" id="cfgLogoUrl" placeholder="Kosongkan untuk logo default" class="flex-1 p-2 border border-slate-200 rounded-lg">
+                    <button type="button" onclick="document.getElementById('cfgLogoFile').click()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-medium text-slate-700 shrink-0">Upload</button>
+                    <input type="file" id="cfgLogoFile" accept="image/*" class="hidden" onchange="handleUploadSchoolAsset(event, 'cfgLogoUrl')">
+                  </div>
+                </div>
+                <div>
+                  <label class="block font-semibold text-slate-700 mb-1">Tanda Tangan & Cap Kepsek (Opsional)</label>
+                  <div class="flex gap-1.5">
+                    <input type="text" id="cfgTtdUrl" placeholder="URL / Upload gambar TTD & Stempel" class="flex-1 p-2 border border-slate-200 rounded-lg">
+                    <button type="button" onclick="document.getElementById('cfgTtdFile').click()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-medium text-slate-700 shrink-0">Upload</button>
+                    <input type="file" id="cfgTtdFile" accept="image/*" class="hidden" onchange="handleUploadSchoolAsset(event, 'cfgTtdUrl')">
+                  </div>
                 </div>
               </div>
-              <div>
-                <label class="block font-semibold text-slate-700 mb-1">Tanda Tangan & Cap Kepsek (Opsional)</label>
-                <div class="flex gap-1.5">
-                  <input type="text" id="cfgTtdUrl" placeholder="URL / Upload gambar TTD & Stempel" class="flex-1 p-2 border border-slate-200 rounded-lg">
-                  <button type="button" onclick="document.getElementById('cfgTtdFile').click()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-medium text-slate-700 shrink-0">Upload</button>
-                  <input type="file" id="cfgTtdFile" accept="image/*" class="hidden" onchange="handleUploadSchoolAsset(event, 'cfgTtdUrl')">
-                </div>
+
+              <div class="pt-3 border-t border-slate-100 flex justify-end">
+                <button type="button" onclick="saveSchoolSettings()" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition">
+                  <i data-lucide="save" class="w-4 h-4"></i> Simpan Pengaturan
+                </button>
               </div>
             </div>
 
-            <div class="pt-3 border-t border-slate-100 flex justify-end">
-              <button onclick="saveSchoolSettings()" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition">
-                <i data-lucide="save" class="w-4 h-4"></i> Simpan Pengaturan
-              </button>
+            <!-- Panel Firebase Security Rules -->
+            <div class="bg-slate-900 text-slate-100 p-6 rounded-2xl border border-slate-800 shadow-xs flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 text-[11px] font-bold flex items-center gap-1.5">
+                    <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Firestore Security Rules
+                  </span>
+                  <button type="button" onclick="copyFirestoreRules()" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-[11px] font-semibold flex items-center gap-1 transition">
+                    <i data-lucide="copy" class="w-3 h-3"></i> Salin Rules
+                  </button>
+                </div>
+                <p class="text-[11px] text-slate-400 leading-relaxed">
+                  Salin kode di bawah ini ke <b>Firebase Console &rarr; Firestore Database &rarr; Rules</b> saat menggunakan mode produksi (<code class="text-amber-300">IS_PREVIEW = false</code>).
+                </p>
+                <pre id="firestoreRulesCode" class="bg-slate-950 text-emerald-300 p-3 rounded-xl text-[10px] font-mono overflow-x-auto leading-relaxed border border-slate-800">rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /peserta/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+    match /pengaturan/{document=**} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+  }
+}</pre>
+              </div>
+              <div class="p-3 rounded-xl bg-slate-800/70 border border-slate-700/60 text-[11px] text-slate-300 space-y-1">
+                <div class="font-bold text-white">Panduan Deploy Firebase:</div>
+                <p>1. Ubah <code class="text-amber-300 font-mono">const IS_PREVIEW = false;</code> di bagian atas script.</p>
+                <p>2. Ganti <code class="text-amber-300 font-mono">firebaseConfig</code> dengan milik proyek Firebase Anda.</p>
+              </div>
             </div>
           </div>
         </section>
@@ -661,10 +699,10 @@
                 <option value="EXAM">Kartu Peserta Ujian</option>
                 <option value="NISN">Kartu NISN Standar</option>
               </select>
-              <button onclick="triggerPrintNow()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg shadow-sm flex items-center gap-1.5 transition">
+              <button type="button" onclick="triggerPrintNow()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg shadow-sm flex items-center gap-1.5 transition">
                 <i data-lucide="printer" class="w-4 h-4"></i> Cetak Kartu Saya
               </button>
-              <button onclick="downloadStudentPortalPDF()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-lg shadow-sm flex items-center gap-1.5 transition">
+              <button type="button" onclick="downloadStudentPortalPDF()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs rounded-lg shadow-sm flex items-center gap-1.5 transition">
                 <i data-lucide="file-down" class="w-4 h-4"></i> Unduh PDF
               </button>
             </div>
@@ -680,30 +718,30 @@
 
     <!-- BOTTOM NAVIGATION BAR (MOBILE) -->
     <nav id="mobileNavBar" class="md:hidden fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 flex items-center justify-around py-2 px-1 z-40">
-      <button onclick="switchMenu('dashboard')" data-menu="dashboard" class="nav-btn-mobile flex flex-col items-center gap-0.5 text-[10px] font-bold text-brand-600">
+      <button type="button" onclick="switchMenu('dashboard')" data-menu="dashboard" class="nav-btn-mobile flex flex-col items-center gap-0.5 text-[10px] font-bold text-brand-600">
         <i data-lucide="layout-dashboard" class="w-5 h-5"></i><span>Home</span>
       </button>
-      <button onclick="switchMenu('peserta')" data-menu="peserta" class="nav-btn-mobile flex flex-col items-center gap-0.5 text-[10px] font-medium text-slate-500">
+      <button type="button" onclick="switchMenu('peserta')" data-menu="peserta" class="nav-btn-mobile flex flex-col items-center gap-0.5 text-[10px] font-medium text-slate-500">
         <i data-lucide="users" class="w-5 h-5"></i><span>Peserta</span>
       </button>
-      <button onclick="switchMenu('excel')" data-menu="excel" class="nav-btn-mobile flex flex-col items-center gap-0.5 text-[10px] font-medium text-slate-500">
+      <button type="button" onclick="switchMenu('excel')" data-menu="excel" class="nav-btn-mobile flex flex-col items-center gap-0.5 text-[10px] font-medium text-slate-500">
         <i data-lucide="file-spreadsheet" class="w-5 h-5"></i><span>Excel</span>
       </button>
-      <button onclick="switchMenu('studio-cetak')" data-menu="studio-cetak" class="nav-btn-mobile flex flex-col items-center gap-0.5 text-[10px] font-medium text-slate-500">
+      <button type="button" onclick="switchMenu('studio-cetak')" data-menu="studio-cetak" class="nav-btn-mobile flex flex-col items-center gap-0.5 text-[10px] font-medium text-slate-500">
         <i data-lucide="printer" class="w-5 h-5"></i><span>Cetak</span>
       </button>
-      <button onclick="switchMenu('pengaturan')" data-menu="pengaturan" class="nav-btn-mobile flex flex-col items-center gap-0.5 text-[10px] font-medium text-slate-500">
+      <button type="button" onclick="switchMenu('pengaturan')" data-menu="pengaturan" class="nav-btn-mobile flex flex-col items-center gap-0.5 text-[10px] font-medium text-slate-500">
         <i data-lucide="settings-2" class="w-5 h-5"></i><span>Kop</span>
       </button>
     </nav>
   </div>
 
-  <!-- ================= MODAL TAMBAH / EDIT PESERTA (DENGAN KAMERA & UPLOAD FOTO) ================= -->
+  <!-- ================= MODAL TAMBAH / EDIT PESERTA (DENGAN KAMERA STABIL & UPLOAD FOTO) ================= -->
   <div id="pesertaModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 no-print">
-    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[92vh] overflow-y-auto">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[92vh] overflow-y-auto" onclick="event.stopPropagation()">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <h3 id="modalTitle" class="font-bold text-slate-900 text-base font-display">Tambah Data Peserta</h3>
-        <button type="button" onclick="closePesertaModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+        <button type="button" onclick="closePesertaModal(event)" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
@@ -711,7 +749,7 @@
       <form id="pesertaForm" onsubmit="handleSavePeserta(event)" class="space-y-3 text-xs">
         <input type="hidden" id="editPesertaId">
 
-        <!-- Bagian Foto Siswa (Upload / Kamera) -->
+        <!-- Bagian Foto Siswa (Upload / Kamera Stabil) -->
         <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2.5">
           <label class="block font-bold text-slate-700">Pas Foto Peserta (2x3 / 3x4)</label>
           <div class="flex items-center gap-3">
@@ -725,13 +763,13 @@
 
             <div class="flex-1 space-y-1.5">
               <div class="flex flex-wrap gap-1.5">
-                <button type="button" onclick="document.getElementById('mFotoFileInput').click()" class="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-lg font-medium flex items-center gap-1 shadow-2xs transition">
+                <button type="button" onclick="triggerUploadPhotoBtn(event)" class="px-2.5 py-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-lg font-medium flex items-center gap-1 shadow-2xs transition cursor-pointer">
                   <i data-lucide="image-plus" class="w-3.5 h-3.5 text-brand-600"></i> Upload File Foto
                 </button>
-                <button type="button" onclick="toggleWebcamCapture()" class="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-brand-700 border border-indigo-200 rounded-lg font-medium flex items-center gap-1 transition">
+                <button type="button" id="btnToggleCamera" onclick="toggleWebcamCapture(event)" class="px-2.5 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-brand-700 border border-indigo-200 rounded-lg font-semibold flex items-center gap-1 transition cursor-pointer">
                   <i data-lucide="camera" class="w-3.5 h-3.5"></i> Ambil dari Kamera
                 </button>
-                <button type="button" id="btnResetFoto" onclick="clearParticipantPhoto()" class="hidden px-2 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg font-medium transition" title="Hapus Foto">
+                <button type="button" id="btnResetFoto" onclick="clearParticipantPhoto(event)" class="hidden px-2 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg font-medium transition cursor-pointer" title="Hapus Foto">
                   <i data-lucide="trash" class="w-3.5 h-3.5"></i>
                 </button>
               </div>
@@ -741,22 +779,28 @@
             </div>
           </div>
 
-          <!-- Area Kamera Langsung -->
+          <!-- Area Kamera Langsung (Tidak pernah menutup modal) -->
           <div id="webcamContainer" class="hidden pt-2 border-t border-slate-200 space-y-2">
-            <div class="relative rounded-lg overflow-hidden bg-slate-900 aspect-video max-h-48 mx-auto flex items-center justify-center">
+            <div id="webcamStatusBanner" class="text-[11px] px-2.5 py-1.5 rounded-lg bg-indigo-50 text-indigo-800 font-medium flex items-center justify-between">
+              <span id="webcamStatusText">Menyiapkan kamera perangkat...</span>
+            </div>
+            <div class="relative rounded-xl overflow-hidden bg-slate-900 aspect-video max-h-52 mx-auto flex items-center justify-center border border-slate-700">
               <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover"></video>
               <div class="absolute inset-0 pointer-events-none border-2 border-dashed border-amber-400/70 m-4 rounded-lg flex items-end justify-center pb-1">
-                <span class="bg-slate-900/70 text-white text-[9px] px-2 py-0.5 rounded">Posisikan wajah di tengah bingkai</span>
+                <span class="bg-slate-900/80 text-white text-[9px] px-2 py-0.5 rounded">Posisikan wajah di tengah bingkai</span>
               </div>
             </div>
             <div class="flex flex-wrap justify-center gap-2">
-              <button type="button" onclick="capturePhotoFromWebcam()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-lg flex items-center gap-1 shadow-xs">
-                <i data-lucide="aperture" class="w-3.5 h-3.5"></i> Jepret Foto
+              <button type="button" onclick="capturePhotoFromWebcam(event)" class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg flex items-center gap-1 shadow-xs cursor-pointer">
+                <i data-lucide="aperture" class="w-3.5 h-3.5"></i> Jepret Foto Sekarang
               </button>
-              <button type="button" onclick="switchWebcamFacingMode()" class="px-2.5 py-1.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-medium rounded-lg flex items-center gap-1">
+              <button type="button" onclick="switchWebcamFacingMode(event)" class="px-2.5 py-1.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-semibold rounded-lg flex items-center gap-1 cursor-pointer">
                 <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Ganti Kamera
               </button>
-              <button type="button" onclick="stopWebcamStream()" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium rounded-lg">
+              <button type="button" onclick="triggerDeviceCameraFallback(event)" class="px-2.5 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 font-semibold rounded-lg flex items-center gap-1 cursor-pointer">
+                <i data-lucide="smartphone" class="w-3.5 h-3.5"></i> Kamera HP / File
+              </button>
+              <button type="button" onclick="stopWebcamStream(event)" class="px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold rounded-lg cursor-pointer">
                 Tutup Kamera
               </button>
             </div>
@@ -813,7 +857,7 @@
         </div>
 
         <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
-          <button type="button" onclick="closePesertaModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl">Batal</button>
+          <button type="button" onclick="closePesertaModal(event)" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl">Batal</button>
           <button type="submit" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-xs">Simpan Peserta</button>
         </div>
       </form>
@@ -837,12 +881,12 @@
     </div>
   </div>
 
-  <!-- ================= SCRIPT APLIKASI UTAMA ================= -->
+  <!-- ================= SCRIPT APLIKASI UTAMA (HYBRID FIREBASE SDK) ================= -->
   <script type="module">
-    // KONFIGURASI APLIKASI
-    const IS_PREVIEW = false; // Ubah menjadi false SAAT DEPLOY / PUBLISH agar terhubung murni ke Firebase tanpa data dummy
+    // SAKLAR DUAL-MODE: true = Mode Pratinjau Instan (Data Dummy), false = Mode Produksi Firebase Murni
+    const IS_PREVIEW = false;
 
-    // PASTE FIREBASE CONFIG ANDA DI SINI
+    // PASTE FIREBASE CONFIG ANDA DI SINI (Digunakan saat IS_PREVIEW = false)
     const firebaseConfig = {
   apiKey: "AIzaSyBixLR0rr62F76nQ8AiDfWNQOQnD2hHImQ",
   authDomain: "smartcard-aa053.firebaseapp.com",
@@ -851,6 +895,22 @@
   messagingSenderId: "1074528157861",
   appId: "1:1074528157861:web:3bece7d8a8ee8b26d28d4c"
     };
+
+    // Import Firebase SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    let app, auth, db;
+    if (!IS_PREVIEW) {
+      try {
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+      } catch (err) {
+        console.error("Firebase init error:", err);
+      }
+    }
 
     // --- State Global ---
     let currentUser = null;
@@ -906,20 +966,23 @@
     // --- Inisialisasi PWA Service Worker via Blob ---
     function registerBlobServiceWorker() {
       if ('serviceWorker' in navigator) {
-        const swCode = `
-          self.addEventListener('install', e => self.skipWaiting());
-          self.addEventListener('activate', e => self.clients.claim());
-          self.addEventListener('fetch', () => {});
-        `;
-        const blob = new Blob([swCode], { type: 'application/javascript' });
-        const swUrl = URL.createObjectURL(blob);
-        navigator.serviceWorker.register(swUrl).catch(() => {});
+        try {
+          const swCode = `
+            self.addEventListener('install', e => self.skipWaiting());
+            self.addEventListener('activate', e => self.clients.claim());
+            self.addEventListener('fetch', () => {});
+          `;
+          const blob = new Blob([swCode], { type: 'application/javascript' });
+          const swUrl = URL.createObjectURL(blob);
+          navigator.serviceWorker.register(swUrl).catch(() => {});
+        } catch (e) {}
       }
     }
 
     // --- Toast Notification ---
     window.showToast = function(msg, type = "success") {
       const container = document.getElementById('toastContainer');
+      if (!container) return;
       const el = document.createElement('div');
       const bgClass = type === 'error'
         ? 'bg-rose-600 text-white'
@@ -936,7 +999,24 @@
       }, 3200);
     };
 
-    // --- Login Tab & Demo Fill ---
+    // --- Copy Firestore Rules ---
+    window.copyFirestoreRules = function() {
+      const codeEl = document.getElementById('firestoreRulesCode');
+      if (!codeEl) return;
+      const textarea = document.createElement('textarea');
+      textarea.value = codeEl.textContent;
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showToast("Firestore Security Rules berhasil disalin ke clipboard!");
+      } catch (err) {
+        showToast("Gagal menyalin otomatis, silakan blok teks secara manual.", "error");
+      }
+      document.body.removeChild(textarea);
+    };
+
+    // --- Tab Switcher Login ---
     window.switchLoginTab = function(tab) {
       const adminForm = document.getElementById('adminLoginForm');
       const siswaForm = document.getElementById('siswaLoginForm');
@@ -968,6 +1048,21 @@
       document.getElementById('siswaPassword').value = "12-05-2008";
     };
 
+    // --- Fetch Data from Firestore ---
+    async function fetchPesertaFromFirestore() {
+      if (IS_PREVIEW || !db) return;
+      try {
+        const snap = await getDocs(collection(db, "peserta"));
+        pesertaList = [];
+        snap.forEach(docSnap => {
+          pesertaList.push({ id: docSnap.id, ...docSnap.data() });
+        });
+        refreshAllUI();
+      } catch (err) {
+        console.error("Gagal mengambil data dari Firestore:", err);
+      }
+    }
+
     // --- Handle Login ---
     window.handleAdminLogin = async function(e) {
       e.preventDefault();
@@ -983,7 +1078,19 @@
           showToast("Email atau password demo salah! Klik kotak Akun Demo.", "error");
         }
       } else {
-        showToast("Silakan lengkapi konfigurasi Firebase Auth untuk produksi.", "error");
+        if (!auth) {
+          showToast("Konfigurasi Firebase belum terhubung dengan benar.", "error");
+          return;
+        }
+        try {
+          const userCred = await signInWithEmailAndPassword(auth, email, pass);
+          currentUser = { role: 'admin', email: userCred.user.email };
+          await fetchPesertaFromFirestore();
+          enterApp();
+          showToast("Login Admin berhasil!");
+        } catch (err) {
+          showToast("Login gagal: " + err.message, "error");
+        }
       }
     };
 
@@ -991,6 +1098,10 @@
       e.preventDefault();
       const nisn = document.getElementById('siswaNisn').value.trim();
       const pass = normalizeDateToDMY(document.getElementById('siswaPassword').value.trim());
+
+      if (!IS_PREVIEW && db) {
+        await fetchPesertaFromFirestore();
+      }
 
       const found = pesertaList.find(p => (p.nisn === nisn || p.noPeserta === nisn) && normalizeDateToDMY(p.dob) === pass);
       if (found) {
@@ -1002,9 +1113,12 @@
       }
     };
 
-    window.handleLogout = function() {
+    window.handleLogout = async function() {
       stopWebcamStream();
       exitPrintMode();
+      if (!IS_PREVIEW && auth) {
+        await signOut(auth).catch(() => {});
+      }
       currentUser = null;
       document.getElementById('appRoot').classList.add('hidden');
       document.getElementById('authView').classList.remove('hidden');
@@ -1114,6 +1228,7 @@
     // --- Render Tabel Peserta & Checkbox ---
     window.renderPesertaTable = function() {
       const tbody = document.getElementById('pesertaTableBody');
+      if (!tbody) return;
       const q = (document.getElementById('searchPesertaInput')?.value || '').toLowerCase();
       const filterKelas = document.getElementById('filterKelasSelect')?.value || '';
 
@@ -1143,7 +1258,7 @@
             <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleSelectOnePeserta('${p.id}', this.checked)" class="rounded border-slate-300 text-brand-600 focus:ring-brand-500 cursor-pointer">
           </td>
           <td class="p-3">
-            <button type="button" onclick="openEditPesertaWithCamera('${p.id}')" title="Klik untuk ganti/ambil foto" class="w-9 h-11 rounded border border-slate-300 bg-slate-100 overflow-hidden flex items-center justify-center hover:ring-2 hover:ring-brand-500 transition">
+            <button type="button" onclick="openEditPesertaWithCamera('${p.id}', event)" title="Klik untuk ganti/ambil foto" class="w-9 h-11 rounded border border-slate-300 bg-slate-100 overflow-hidden flex items-center justify-center hover:ring-2 hover:ring-brand-500 transition cursor-pointer">
               ${p.fotoUrl ? `<img src="${p.fotoUrl}" class="w-full h-full object-cover">` : `<i data-lucide="camera" class="w-4 h-4 text-slate-400"></i>`}
             </button>
           </td>
@@ -1160,10 +1275,10 @@
           <td class="p-3 font-mono text-emerald-700 font-semibold">${normalizeDateToDMY(p.dob) || '-'}</td>
           <td class="p-3 text-right">
             <div class="inline-flex items-center gap-1">
-              <button onclick="openPesertaModal('${p.id}')" class="p-1.5 text-slate-500 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition" title="Edit">
+              <button type="button" onclick="openPesertaModal('${p.id}')" class="p-1.5 text-slate-500 hover:text-brand-600 hover:bg-brand-50 rounded-lg transition" title="Edit">
                 <i data-lucide="pencil" class="w-4 h-4"></i>
               </button>
-              <button onclick="deleteSinglePeserta('${p.id}')" class="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition" title="Hapus">
+              <button type="button" onclick="deleteSinglePeserta('${p.id}')" class="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition" title="Hapus">
                 <i data-lucide="trash-2" class="w-4 h-4"></i>
               </button>
             </div>
@@ -1197,11 +1312,13 @@
       const badge = document.getElementById('selectedCountBadge');
       const selectAll = document.getElementById('selectAllCheckbox');
 
-      badge.textContent = selectedPesertaIds.size;
-      if (selectedPesertaIds.size > 0) {
-        btn.classList.remove('hidden');
-      } else {
-        btn.classList.add('hidden');
+      if (badge) badge.textContent = selectedPesertaIds.size;
+      if (btn) {
+        if (selectedPesertaIds.size > 0) {
+          btn.classList.remove('hidden');
+        } else {
+          btn.classList.add('hidden');
+        }
       }
 
       if (selectAll) {
@@ -1240,12 +1357,30 @@
       document.getElementById('bulkDeleteModal').classList.add('hidden');
     };
 
-    window.confirmBulkDeleteAction = function() {
+    window.confirmBulkDeleteAction = async function() {
       if (bulkDeleteMode === 'all') {
+        if (!IS_PREVIEW && db) {
+          try {
+            for (const p of pesertaList) {
+              await deleteDoc(doc(db, "peserta", p.id));
+            }
+          } catch (err) {
+            console.error("Gagal hapus dari Firestore:", err);
+          }
+        }
         pesertaList = [];
         selectedPesertaIds.clear();
         showToast("Seluruh data peserta berhasil dikosongkan.");
       } else {
+        if (!IS_PREVIEW && db) {
+          try {
+            for (const id of selectedPesertaIds) {
+              await deleteDoc(doc(db, "peserta", id));
+            }
+          } catch (err) {
+            console.error("Gagal hapus dari Firestore:", err);
+          }
+        }
         pesertaList = pesertaList.filter(p => !selectedPesertaIds.has(p.id));
         selectedPesertaIds.clear();
         showToast("Peserta terpilih berhasil dihapus.");
@@ -1260,7 +1395,7 @@
       openBulkDeleteModal('selected');
     };
 
-    // --- Modal Tambah/Edit Peserta & Kamera/Upload Foto ---
+    // --- Modal Tambah/Edit Peserta & Kamera Stabil (Tidak Menutup Form/Aplikasi) ---
     window.openPesertaModal = function(editId = null) {
       stopWebcamStream();
       const modal = document.getElementById('pesertaModal');
@@ -1292,13 +1427,40 @@
       if (window.lucide) lucide.createIcons();
     };
 
-    window.openEditPesertaWithCamera = function(editId) {
+    window.openEditPesertaWithCamera = function(editId, evt) {
+      if (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
       openPesertaModal(editId);
+      setTimeout(() => {
+        toggleWebcamCapture();
+      }, 150);
     };
 
-    window.closePesertaModal = function() {
+    window.closePesertaModal = function(evt) {
+      if (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
       stopWebcamStream();
       document.getElementById('pesertaModal').classList.add('hidden');
+    };
+
+    window.triggerUploadPhotoBtn = function(evt) {
+      if (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
+      document.getElementById('mFotoFileInput').click();
+    };
+
+    window.triggerDeviceCameraFallback = function(evt) {
+      if (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
+      document.getElementById('mFotoCameraFallbackInput').click();
     };
 
     window.syncPhotoPreviewFromInput = function() {
@@ -1320,7 +1482,11 @@
       }
     };
 
-    window.clearParticipantPhoto = function() {
+    window.clearParticipantPhoto = function(evt) {
+      if (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
       document.getElementById('mFotoUrl').value = '';
       document.getElementById('mFotoFileInput').value = '';
       syncPhotoPreviewFromInput();
@@ -1334,8 +1500,8 @@
       canvas.height = targetH;
       const ctx = canvas.getContext('2d');
 
-      const srcW = isVideo ? sourceEl.videoWidth : sourceEl.width;
-      const srcH = isVideo ? sourceEl.videoHeight : sourceEl.height;
+      const srcW = isVideo ? (sourceEl.videoWidth || 640) : (sourceEl.width || 240);
+      const srcH = isVideo ? (sourceEl.videoHeight || 480) : (sourceEl.height || 320);
 
       const targetRatio = targetW / targetH;
       const srcRatio = srcW / srcH;
@@ -1350,13 +1516,13 @@
       }
 
       ctx.drawImage(sourceEl, sx, sy, sWidth, sHeight, 0, 0, targetW, targetH);
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.84);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
       document.getElementById('mFotoUrl').value = dataUrl;
       syncPhotoPreviewFromInput();
     }
 
     window.handlePhotoFileSelect = function(e) {
-      const file = e.target.files[0];
+      const file = e.target.files && e.target.files[0];
       if (!file) return;
 
       const reader = new FileReader();
@@ -1364,7 +1530,8 @@
         const img = new Image();
         img.onload = function() {
           compressAndSetPhoto(img, false);
-          showToast("Foto siswa berhasil dimuat & disesuaikan.");
+          stopWebcamStream();
+          showToast("Pas foto berhasil dimuat & disesuaikan!");
         };
         img.src = evt.target.result;
       };
@@ -1374,63 +1541,100 @@
     async function startWebcamWithFacing(facingMode) {
       const container = document.getElementById('webcamContainer');
       const video = document.getElementById('webcamVideo');
+      const statusText = document.getElementById('webcamStatusText');
+      const statusBanner = document.getElementById('webcamStatusBanner');
+
+      if (!container || !video) return;
+
+      // Pastikan kontainer kamera tampil di dalam modal tanpa menutup form
+      container.classList.remove('hidden');
+      if (statusText) statusText.textContent = "Meminta izin akses kamera browser...";
+      if (statusBanner) {
+        statusBanner.className = "text-[11px] px-2.5 py-1.5 rounded-lg bg-indigo-50 text-indigo-800 font-medium flex items-center justify-between";
+      }
 
       if (activeWebcamStream) {
-        activeWebcamStream.getTracks().forEach(t => t.stop());
+        try {
+          activeWebcamStream.getTracks().forEach(t => t.stop());
+        } catch (err) {}
         activeWebcamStream = null;
       }
 
+      if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
+        if (statusText) {
+          statusText.textContent = "Kamera live tidak didukung di mode iframe ini. Klik tombol 'Kamera HP / File' di bawah untuk mengambil foto.";
+        }
+        if (statusBanner) {
+          statusBanner.className = "text-[11px] px-2.5 py-1.5 rounded-lg bg-amber-50 text-amber-800 font-medium flex items-center justify-between";
+        }
+        return;
+      }
+
       try {
-        container.classList.remove('hidden');
-        let stream;
+        let stream = null;
         try {
           stream = await navigator.mediaDevices.getUserMedia({
-            video: { facingMode: { exact: facingMode }, width: { ideal: 640 }, height: { ideal: 480 } },
+            video: { facingMode: { ideal: facingMode }, width: { ideal: 640 }, height: { ideal: 480 } },
             audio: false
           });
-        } catch (e1) {
-          try {
-            stream = await navigator.mediaDevices.getUserMedia({
-              video: { facingMode: { ideal: facingMode }, width: { ideal: 640 }, height: { ideal: 480 } },
-              audio: false
-            });
-          } catch (e2) {
-            stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-          }
+        } catch (firstErr) {
+          stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
         }
+
         activeWebcamStream = stream;
         video.srcObject = stream;
+        video.setAttribute('playsinline', 'true');
         await video.play().catch(() => {});
+
+        if (statusText) statusText.textContent = "Kamera aktif — Posisikan wajah lalu klik 'Jepret Foto Sekarang'.";
+        if (statusBanner) {
+          statusBanner.className = "text-[11px] px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 font-medium flex items-center justify-between";
+        }
         if (window.lucide) lucide.createIcons();
       } catch (err) {
-        container.classList.add('hidden');
-        showToast("Akses kamera langsung dibatasi browser/iframe. Membuka ambil foto perangkat...", "info");
-        document.getElementById('mFotoCameraFallbackInput').click();
+        console.warn("Webcam blocked or unavailable:", err);
+        if (statusText) {
+          statusText.textContent = "Izin kamera live dibatasi oleh browser/iframe. Silakan klik 'Kamera HP / File' atau 'Upload File Foto'.";
+        }
+        if (statusBanner) {
+          statusBanner.className = "text-[11px] px-2.5 py-1.5 rounded-lg bg-amber-50 text-amber-800 font-medium flex items-center justify-between";
+        }
+        showToast("Izin webcam dibatasi iframe. Gunakan tombol 'Kamera HP / File' atau 'Upload File Foto'.", "info");
       }
     }
 
-    window.toggleWebcamCapture = async function() {
-      const container = document.getElementById('webcamContainer');
-      if (!container.classList.contains('hidden')) {
-        stopWebcamStream();
-        return;
+    window.toggleWebcamCapture = async function(evt) {
+      if (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
       }
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        document.getElementById('mFotoCameraFallbackInput').click();
+      const container = document.getElementById('webcamContainer');
+      if (!container) return;
+
+      if (!container.classList.contains('hidden') && activeWebcamStream) {
+        stopWebcamStream();
         return;
       }
       await startWebcamWithFacing(currentFacingMode);
     };
 
-    window.switchWebcamFacingMode = async function() {
+    window.switchWebcamFacingMode = async function(evt) {
+      if (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
       currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
       await startWebcamWithFacing(currentFacingMode);
     };
 
-    window.capturePhotoFromWebcam = function() {
+    window.capturePhotoFromWebcam = function(evt) {
+      if (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
       const video = document.getElementById('webcamVideo');
-      if (!activeWebcamStream || !video.videoWidth) {
-        showToast("Kamera belum siap.", "error");
+      if (!activeWebcamStream || !video || !video.videoWidth) {
+        showToast("Kamera live belum aktif. Silakan klik 'Kamera HP / File' untuk mengambil foto.", "error");
         return;
       }
       compressAndSetPhoto(video, true);
@@ -1438,18 +1642,24 @@
       showToast("Foto dari kamera berhasil diambil!");
     };
 
-    window.stopWebcamStream = function() {
+    window.stopWebcamStream = function(evt) {
+      if (evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      }
       const container = document.getElementById('webcamContainer');
       const video = document.getElementById('webcamVideo');
       if (activeWebcamStream) {
-        activeWebcamStream.getTracks().forEach(track => track.stop());
+        try {
+          activeWebcamStream.getTracks().forEach(track => track.stop());
+        } catch (e) {}
         activeWebcamStream = null;
       }
       if (video) video.srcObject = null;
       if (container) container.classList.add('hidden');
     };
 
-    window.handleSavePeserta = function(e) {
+    window.handleSavePeserta = async function(e) {
       e.preventDefault();
       const editId = document.getElementById('editPesertaId').value;
       const payload = {
@@ -1464,6 +1674,15 @@
         dob: normalizeDateToDMY(document.getElementById('mDob').value.trim()),
         fotoUrl: document.getElementById('mFotoUrl').value.trim()
       };
+
+      if (!IS_PREVIEW && db) {
+        try {
+          await setDoc(doc(db, "peserta", payload.id), payload);
+        } catch (err) {
+          showToast("Gagal menyimpan ke Firestore: " + err.message, "error");
+          return;
+        }
+      }
 
       if (editId) {
         const idx = pesertaList.findIndex(item => item.id === editId);
@@ -1490,7 +1709,7 @@
       reader.readAsDataURL(file);
     };
 
-    window.saveSchoolSettings = function() {
+    window.saveSchoolSettings = async function() {
       schoolConfig.instansi = document.getElementById('cfgInstansi').value.trim();
       schoolConfig.namaSekolah = document.getElementById('cfgNamaSekolah').value.trim();
       schoolConfig.npsn = document.getElementById('cfgNpsn').value.trim();
@@ -1502,6 +1721,14 @@
       schoolConfig.logoUrl = document.getElementById('cfgLogoUrl').value.trim();
       const ttdInput = document.getElementById('cfgTtdUrl');
       if (ttdInput) schoolConfig.ttdUrl = ttdInput.value.trim();
+
+      if (!IS_PREVIEW && db) {
+        try {
+          await setDoc(doc(db, "pengaturan", "sekolah"), schoolConfig);
+        } catch (err) {
+          console.error("Gagal simpan pengaturan ke Firestore:", err);
+        }
+      }
 
       showToast("Pengaturan kop dan sekolah tersimpan!");
       generatePrintCards();
@@ -1669,7 +1896,7 @@
           });
 
           previewSec.classList.remove('hidden');
-          showToast(`Berhasil membaca ${tempExcelData.length} data siswa & mengonversi tanggal lahir!`);
+          showToast(`Berhasil membaca ${tempExcelData.length} data siswa & mengonversi tanggal lahir (DD-MM-YYYY)!`);
         } catch (err) {
           showToast("Gagal memproses file Excel: " + err.message, "error");
         }
@@ -1683,12 +1910,24 @@
       document.getElementById('excelFileInput').value = '';
     };
 
-    window.commitExcelImport = function() {
+    window.commitExcelImport = async function() {
       if (tempExcelData.length === 0) return;
+
+      if (!IS_PREVIEW && db) {
+        try {
+          for (const item of tempExcelData) {
+            await setDoc(doc(db, "peserta", item.id), item);
+          }
+        } catch (err) {
+          showToast("Gagal menyimpan ke Firestore: " + err.message, "error");
+          return;
+        }
+      }
+
       pesertaList = [...pesertaList, ...tempExcelData];
       cancelExcelImport();
       refreshAllUI();
-      showToast("Data Excel berhasil disimpan ke daftar peserta!");
+      showToast("Data Excel berhasil disimpan ke database!");
       switchMenu('peserta');
     };
 
@@ -1918,7 +2157,6 @@
         return;
       }
 
-      // Clone kartu dan konversi semua canvas QRCode menjadi gambar <img> agar ikut tercetak di jendela baru
       const cloneEl = targetEl.cloneNode(true);
       const origCanvases = targetEl.querySelectorAll('canvas');
       const cloneCanvases = cloneEl.querySelectorAll('canvas');
@@ -1971,7 +2209,6 @@
           } catch (e) {}
         }, 700);
       } else {
-        // Fallback jika pop-up diblokir browser
         window.print();
         showToast("Jika dialog print diblokir iframe, silakan izinkan pop-up atau klik 'Unduh File PDF (.pdf)'.", "info");
       }
@@ -2070,6 +2307,15 @@
         pesertaList = [...INITIAL_DUMMY_PESERTA];
         document.getElementById('previewBanner').classList.remove('hidden');
         document.getElementById('demoAccountBox').classList.remove('hidden');
+      } else {
+        if (auth) {
+          onAuthStateChanged(auth, async (user) => {
+            if (user) {
+              currentUser = { role: 'admin', email: user.email };
+              await fetchPesertaFromFirestore();
+            }
+          });
+        }
       }
       if (window.lucide) lucide.createIcons();
     });
