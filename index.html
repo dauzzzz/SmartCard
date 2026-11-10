@@ -626,18 +626,22 @@
                   <input type="text" id="cfgKotaTgl" value="Jakarta, 10 November 2026" class="w-full p-2 border border-slate-200 rounded-lg">
                 </div>
                 <div>
-                  <label class="block font-semibold text-slate-700 mb-1">Logo Sekolah (Upload File / URL)</label>
-                  <div class="flex gap-1.5">
-                    <input type="text" id="cfgLogoUrl" placeholder="Kosongkan untuk logo default" class="flex-1 p-2 border border-slate-200 rounded-lg">
-                    <button type="button" onclick="document.getElementById('cfgLogoFile').click()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-medium text-slate-700 shrink-0">Upload</button>
+                  <label class="block font-semibold text-slate-700 mb-1">Logo Sekolah / Kartu (Upload File / URL)</label>
+                  <div class="flex items-center gap-2">
+                    <div class="w-9 h-9 rounded-lg border border-slate-200 bg-slate-50 flex items-center justify-center overflow-hidden shrink-0">
+                      <img id="cfgLogoPreviewImg" src="" alt="Logo" class="hidden w-full h-full object-contain" onerror="this.classList.add('hidden')">
+                      <i id="cfgLogoPreviewIcon" data-lucide="shield" class="w-4 h-4 text-slate-400"></i>
+                    </div>
+                    <input type="text" id="cfgLogoUrl" oninput="syncSchoolAssetPreview()" placeholder="URL Logo atau klik Upload File..." class="flex-1 p-2 border border-slate-200 rounded-lg">
+                    <button type="button" onclick="document.getElementById('cfgLogoFile').click()" class="px-3 py-2 bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 rounded-lg font-bold shrink-0 cursor-pointer">Upload Logo</button>
                     <input type="file" id="cfgLogoFile" accept="image/*" class="hidden" onchange="handleUploadSchoolAsset(event, 'cfgLogoUrl')">
                   </div>
                 </div>
                 <div>
                   <label class="block font-semibold text-slate-700 mb-1">Tanda Tangan & Cap Kepsek (Opsional)</label>
-                  <div class="flex gap-1.5">
+                  <div class="flex items-center gap-2">
                     <input type="text" id="cfgTtdUrl" placeholder="URL / Upload gambar TTD & Stempel" class="flex-1 p-2 border border-slate-200 rounded-lg">
-                    <button type="button" onclick="document.getElementById('cfgTtdFile').click()" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg font-medium text-slate-700 shrink-0">Upload</button>
+                    <button type="button" onclick="document.getElementById('cfgTtdFile').click()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 rounded-lg font-semibold text-slate-700 shrink-0 cursor-pointer">Upload TTD</button>
                     <input type="file" id="cfgTtdFile" accept="image/*" class="hidden" onchange="handleUploadSchoolAsset(event, 'cfgTtdUrl')">
                   </div>
                 </div>
@@ -884,7 +888,7 @@ service cloud.firestore {
   <!-- ================= SCRIPT APLIKASI UTAMA (HYBRID FIREBASE SDK) ================= -->
   <script type="module">
     // SAKLAR DUAL-MODE: true = Mode Pratinjau Instan (Data Dummy), false = Mode Produksi Firebase Murni
-    const IS_PREVIEW = false;
+    const IS_PREVIEW = true;
 
     // PASTE FIREBASE CONFIG ANDA DI SINI (Digunakan saat IS_PREVIEW = false)
     const firebaseConfig = {
@@ -1057,11 +1061,55 @@ service cloud.firestore {
         snap.forEach(docSnap => {
           pesertaList.push({ id: docSnap.id, ...docSnap.data() });
         });
+        try {
+          const cfgSnap = await getDocs(collection(db, "pengaturan"));
+          cfgSnap.forEach(d => {
+            if (d.id === "sekolah") {
+              schoolConfig = { ...schoolConfig, ...d.data() };
+              syncSchoolConfigToInputs();
+            }
+          });
+        } catch (cfgErr) {}
         refreshAllUI();
       } catch (err) {
         console.error("Gagal mengambil data dari Firestore:", err);
       }
     }
+
+    function syncSchoolConfigToInputs() {
+      const setVal = (id, val) => {
+        const el = document.getElementById(id);
+        if (el && val !== undefined) el.value = val;
+      };
+      setVal('cfgInstansi', schoolConfig.instansi);
+      setVal('cfgNamaSekolah', schoolConfig.namaSekolah);
+      setVal('cfgNpsn', schoolConfig.npsn);
+      setVal('cfgTahunAjaran', schoolConfig.tahunAjaran);
+      setVal('cfgAlamat', schoolConfig.alamat);
+      setVal('cfgKepsekNama', schoolConfig.kepsekNama);
+      setVal('cfgKepsekNip', schoolConfig.kepsekNip);
+      setVal('cfgKotaTgl', schoolConfig.kotaTgl);
+      setVal('cfgLogoUrl', schoolConfig.logoUrl);
+      setVal('cfgTtdUrl', schoolConfig.ttdUrl);
+      syncSchoolAssetPreview();
+    }
+
+    window.syncSchoolAssetPreview = function() {
+      const logoUrl = document.getElementById('cfgLogoUrl')?.value.trim() || '';
+      const img = document.getElementById('cfgLogoPreviewImg');
+      const icon = document.getElementById('cfgLogoPreviewIcon');
+      if (img && icon) {
+        if (logoUrl) {
+          img.src = logoUrl;
+          img.classList.remove('hidden');
+          icon.classList.add('hidden');
+        } else {
+          img.src = '';
+          img.classList.add('hidden');
+          icon.classList.remove('hidden');
+        }
+      }
+    };
 
     // --- Handle Login ---
     window.handleAdminLogin = async function(e) {
@@ -1699,12 +1747,42 @@ service cloud.firestore {
 
     // --- Pengaturan Sekolah & Upload Logo/TTD ---
     window.handleUploadSchoolAsset = function(e, targetInputId) {
-      const file = e.target.files[0];
+      const file = e.target.files && e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = function(evt) {
-        document.getElementById(targetInputId).value = evt.target.result;
-        showToast("Gambar berhasil dimuat. Klik Simpan Pengaturan untuk menerapkan.");
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 220;
+          let w = img.width || 160;
+          let h = img.height || 160;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.clearRect(0, 0, w, h);
+          ctx.drawImage(img, 0, 0, w, h);
+          const dataUrl = canvas.toDataURL('image/png');
+          document.getElementById(targetInputId).value = dataUrl;
+          if (targetInputId === 'cfgLogoUrl') {
+            schoolConfig.logoUrl = dataUrl;
+            syncSchoolAssetPreview();
+          } else if (targetInputId === 'cfgTtdUrl') {
+            schoolConfig.ttdUrl = dataUrl;
+          }
+          generatePrintCards();
+          showToast("Logo/Gambar berhasil diunggah! Klik Simpan Pengaturan untuk menyimpan permanen.");
+        };
+        img.src = evt.target.result;
       };
       reader.readAsDataURL(file);
     };
@@ -1932,6 +2010,28 @@ service cloud.firestore {
     };
 
     // --- TEMPLATE GENERATOR KARTU PESERTA & KARTU NISN STANDAR UKURAN PRESISI ---
+    function getOfficialLogoEmblemSVG(sizeClass = "w-6 h-6") {
+      return `
+        <svg viewBox="0 0 64 64" class="${sizeClass}" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="32,4 56,16 56,44 32,60 8,44 8,16" fill="#0284c7" stroke="#facc15" stroke-width="3"/>
+          <path d="M32 14L46 22V38L32 48L18 38V22L32 14Z" fill="#0369a1" stroke="#fde047" stroke-width="1.5"/>
+          <path d="M22 36C26 32 38 32 42 36M20 28L32 21L44 28" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="32" cy="29" r="3.5" fill="#facc15"/>
+        </svg>
+      `;
+    }
+
+    function renderCardHeaderLogo(sizeClass = "w-6 h-6") {
+      const logoSrc = (schoolConfig.logoUrl || '').trim();
+      if (logoSrc) {
+        return `
+          <img src="${logoSrc}" crossorigin="anonymous" alt="Logo" class="${sizeClass} object-contain shrink-0" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <div style="display:none;" class=" items-center justify-center shrink-0">${getOfficialLogoEmblemSVG(sizeClass)}</div>
+        `;
+      }
+      return `<div class="flex items-center justify-center shrink-0">${getOfficialLogoEmblemSVG(sizeClass)}</div>`;
+    }
+
     function generateSingleCardHTML(p, cardIndex, layoutMode = '4', forceCardType = null) {
       const isCompact = layoutMode === '8';
       const activeType = (forceCardType && forceCardType !== 'ALL') ? forceCardType : (p.jenisUjian || 'SAS');
@@ -1940,59 +2040,67 @@ service cloud.firestore {
       if (activeType === 'NISN') {
         return `
           <div class="nisn-card-box bg-white border-2 border-sky-800 rounded-xl overflow-hidden shadow-xs text-slate-800 flex flex-col justify-between relative">
-            <div class="bg-gradient-to-r from-sky-900 via-blue-800 to-indigo-950 px-3 py-1.5 text-white flex items-center justify-between border-b-2 border-amber-400 shrink-0">
-              <div class="flex items-center gap-2">
-                <div class="w-6 h-6 rounded-full bg-amber-400/20 border border-amber-300/60 flex items-center justify-center text-amber-300 font-extrabold text-[9px] shrink-0">
-                  RI
+            <div class="bg-gradient-to-r from-sky-900 via-blue-800 to-indigo-950 px-2.5 py-1.5 text-white flex items-center justify-between border-b-2 border-amber-400 shrink-0">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="w-7 h-7 rounded-lg bg-white/95 p-0.5 flex items-center justify-center shrink-0 shadow-2xs">
+                  ${renderCardHeaderLogo("w-6 h-6")}
                 </div>
-                <div class="leading-none">
-                  <h4 class="text-[9.5px] font-extrabold tracking-wider uppercase font-display">KARTU NOMOR INDUK SISWA NASIONAL (NISN)</h4>
-                  <p class="text-[7px] text-sky-200 tracking-wide mt-0.5">Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi</p>
+                <div class="leading-none min-w-0">
+                  <h4 class="text-[9px] font-extrabold tracking-wider uppercase font-display">KARTU NOMOR INDUK SISWA NASIONAL (NISN)</h4>
+                  <p class="text-[6.8px] text-sky-200 tracking-wide mt-0.5 truncate">Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi</p>
                 </div>
               </div>
-              <span class="px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 font-extrabold text-[8px] tracking-widest shrink-0">NISN</span>
+              <span class="px-1.5 py-0.5 rounded bg-amber-400 text-slate-950 font-extrabold text-[7.5px] tracking-widest shrink-0 ml-1">NISN</span>
             </div>
 
-            <div class="px-3 py-2 flex gap-2.5 items-center flex-1 bg-gradient-to-br from-white via-sky-50/40 to-indigo-50/30">
-              <div class="w-[18mm] h-[24mm] border border-sky-800/40 rounded bg-slate-100 shrink-0 flex flex-col items-center justify-center overflow-hidden shadow-2xs">
-                ${p.fotoUrl ? `<img src="${p.fotoUrl}" class="w-full h-full object-cover">` : `
+            <div class="px-2.5 py-1.5 flex gap-2 items-center flex-1 bg-gradient-to-br from-white via-sky-50/40 to-indigo-50/30 overflow-hidden">
+              <div class="w-[16.5mm] h-[22.5mm] border border-sky-800/40 rounded bg-slate-100 shrink-0 flex flex-col items-center justify-center overflow-hidden shadow-2xs">
+                ${p.fotoUrl ? `<img src="${p.fotoUrl}" crossorigin="anonymous" class="w-full h-full object-cover">` : `
                   <div class="text-center p-1">
-                    <span class="text-[7px] text-slate-400 font-semibold block">PAS FOTO</span>
-                    <span class="text-[7px] text-slate-400 block font-mono">SISWA</span>
+                    <span class="text-[6.5px] text-slate-400 font-semibold block">PAS FOTO</span>
+                    <span class="text-[6.5px] text-slate-400 block font-mono">SISWA</span>
                   </div>
                 `}
               </div>
 
-              <div class="flex-1 space-y-0.5 text-[8.5px] overflow-hidden">
-                <div class="bg-sky-900/10 border border-sky-300/80 rounded px-2 py-0.5 mb-1 inline-block">
-                  <span class="text-[6.5px] uppercase font-bold text-sky-800 block leading-none">Nomor Induk Siswa Nasional</span>
-                  <span class="font-mono font-extrabold text-[11px] text-slate-900 tracking-wider leading-tight">${p.nisn}</span>
+              <div class="flex-1 min-w-0 space-y-0.5 text-[8px] overflow-hidden">
+                <div class="bg-sky-900/10 border border-sky-300/80 rounded px-1.5 py-0.5 mb-0.5 inline-block">
+                  <span class="text-[6px] uppercase font-bold text-sky-800 block leading-none">Nomor Induk Siswa Nasional</span>
+                  <span class="font-mono font-extrabold text-[10.5px] text-slate-900 tracking-wider leading-tight">${p.nisn}</span>
                 </div>
-                <div class="grid grid-cols-12 gap-0.5 leading-tight">
-                  <span class="col-span-4 text-slate-500 font-medium">Nama Siswa</span>
-                  <span class="col-span-8 font-bold text-slate-900 uppercase truncate">: ${p.nama}</span>
-                </div>
-                <div class="grid grid-cols-12 gap-0.5 leading-tight">
-                  <span class="col-span-4 text-slate-500 font-medium">Tgl. Lahir</span>
-                  <span class="col-span-8 font-semibold text-slate-800 font-mono">: ${normalizeDateToDMY(p.dob) || '-'}</span>
-                </div>
-                <div class="grid grid-cols-12 gap-0.5 leading-tight">
-                  <span class="col-span-4 text-slate-500 font-medium">No. Induk</span>
-                  <span class="col-span-8 font-mono text-slate-700 truncate">: ${p.noPeserta || '-'}</span>
-                </div>
-                <div class="grid grid-cols-12 gap-0.5 leading-tight">
-                  <span class="col-span-4 text-slate-500 font-medium">Kelas / Rom.</span>
-                  <span class="col-span-8 font-semibold text-slate-700 truncate">: ${p.kelas || '-'}</span>
-                </div>
+                <table class="w-full border-collapse text-[8px] leading-[1.18]">
+                  <tbody>
+                    <tr class="align-top">
+                      <td class="w-[42px] text-slate-500 font-medium pr-0.5 whitespace-nowrap">Nama</td>
+                      <td class="w-[4px] text-slate-500 font-bold">:</td>
+                      <td class="font-extrabold text-slate-900 uppercase break-words" style="word-break:break-word;line-height:1.15;">${p.nama}</td>
+                    </tr>
+                    <tr class="align-top">
+                      <td class="text-slate-500 font-medium pr-0.5 whitespace-nowrap">Tgl. Lahir</td>
+                      <td class="text-slate-500 font-bold">:</td>
+                      <td class="font-semibold text-slate-800 font-mono">${normalizeDateToDMY(p.dob) || '-'}</td>
+                    </tr>
+                    <tr class="align-top">
+                      <td class="text-slate-500 font-medium pr-0.5 whitespace-nowrap">No. Induk</td>
+                      <td class="text-slate-500 font-bold">:</td>
+                      <td class="font-mono text-slate-700">${p.noPeserta || '-'}</td>
+                    </tr>
+                    <tr class="align-top">
+                      <td class="text-slate-500 font-medium pr-0.5 whitespace-nowrap">Kelas</td>
+                      <td class="text-slate-500 font-bold">:</td>
+                      <td class="font-semibold text-slate-700">${p.kelas || '-'}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
 
-              <div class="shrink-0 flex flex-col items-center justify-center bg-white p-1 rounded border border-slate-200">
-                <div id="qrcode-${cardIndex}" class="w-[13mm] h-[13mm] flex items-center justify-center"></div>
-                <span class="text-[6px] text-sky-800 font-bold mt-0.5 tracking-widest uppercase">VALID</span>
+              <div class="shrink-0 flex flex-col items-center justify-center bg-white p-0.5 rounded border border-slate-200">
+                <div id="qrcode-${cardIndex}" class="w-[12mm] h-[12mm] flex items-center justify-center"></div>
+                <span class="text-[5.5px] text-sky-800 font-bold mt-0.5 tracking-widest uppercase">VALID</span>
               </div>
             </div>
 
-            <div class="bg-slate-100 border-t border-slate-200 px-3 py-1 flex items-center justify-between text-[7px] text-slate-500 shrink-0">
+            <div class="bg-slate-100 border-t border-slate-200 px-2.5 py-1 flex items-center justify-between text-[6.8px] text-slate-500 shrink-0">
               <span>Berlaku selama berstatus peserta didik aktif secara nasional.</span>
               <span class="font-mono font-bold text-slate-700">${p.nisn}</span>
             </div>
@@ -2008,11 +2116,7 @@ service cloud.firestore {
         <div class="${boxClass} bg-white border-[1.5px] border-slate-800 rounded-lg p-2.5 shadow-2xs text-slate-800 flex flex-col justify-between relative overflow-hidden">
           <div class="border-kop-double pb-1 mb-1 flex items-center gap-1.5 shrink-0">
             <div class="w-7 h-7 shrink-0 flex items-center justify-center">
-              ${schoolConfig.logoUrl ? `<img src="${schoolConfig.logoUrl}" class="max-h-full max-w-full object-contain">` : `
-                <svg viewBox="0 0 24 24" class="w-6 h-6 text-brand-700" fill="currentColor">
-                  <path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm0 13.5l-7-3.18V17c0 3.31 3.13 6 7 6s7-2.69 7-6v-4.68l-7 3.18z"/>
-                </svg>
-              `}
+              ${renderCardHeaderLogo("w-6 h-6")}
             </div>
             <div class="flex-1 text-center leading-none overflow-hidden">
               <h5 class="text-[7px] font-bold text-slate-600 uppercase tracking-tight truncate">${schoolConfig.instansi}</h5>
@@ -2029,8 +2133,8 @@ service cloud.firestore {
           </div>
 
           <div class="flex gap-2 items-center flex-1 my-0.5 overflow-hidden">
-            <div class="w-[16mm] h-[21mm] border border-slate-300 rounded bg-slate-100 shrink-0 flex flex-col items-center justify-center overflow-hidden">
-              ${p.fotoUrl ? `<img src="${p.fotoUrl}" class="w-full h-full object-cover">` : `
+            <div class="w-[15.5mm] h-[20.5mm] border border-slate-300 rounded bg-slate-100 shrink-0 flex flex-col items-center justify-center overflow-hidden">
+              ${p.fotoUrl ? `<img src="${p.fotoUrl}" crossorigin="anonymous" class="w-full h-full object-cover">` : `
                 <div class="text-center p-0.5">
                   <span class="text-[7px] text-slate-400 font-semibold block">FOTO</span>
                   <span class="text-[6.5px] text-slate-400 block font-mono">2x3</span>
@@ -2038,31 +2142,40 @@ service cloud.firestore {
               `}
             </div>
 
-            <div class="flex-1 text-[8px] space-y-0.5 leading-tight overflow-hidden">
-              <div class="grid grid-cols-12 gap-0.5">
-                <span class="col-span-4 text-slate-500 font-medium">No. Peserta</span>
-                <span class="col-span-8 font-bold font-mono text-slate-900 truncate">: ${p.noPeserta}</span>
-              </div>
-              <div class="grid grid-cols-12 gap-0.5">
-                <span class="col-span-4 text-slate-500 font-medium">NISN</span>
-                <span class="col-span-8 font-mono font-semibold truncate">: ${p.nisn}</span>
-              </div>
-              <div class="grid grid-cols-12 gap-0.5">
-                <span class="col-span-4 text-slate-500 font-medium">Nama Siswa</span>
-                <span class="col-span-8 font-bold text-slate-900 uppercase truncate">: ${p.nama}</span>
-              </div>
-              <div class="grid grid-cols-12 gap-0.5">
-                <span class="col-span-4 text-slate-500 font-medium">Kelas</span>
-                <span class="col-span-8 font-semibold truncate">: ${p.kelas}</span>
-              </div>
-              <div class="grid grid-cols-12 gap-0.5">
-                <span class="col-span-4 text-slate-500 font-medium">Ruang / Sesi</span>
-                <span class="col-span-8 truncate">: ${p.ruang || '-'} / ${p.sesi || '-'}</span>
-              </div>
+            <div class="flex-1 min-w-0 text-[7.8px] leading-tight overflow-hidden">
+              <table class="w-full border-collapse text-[7.8px] leading-[1.18]">
+                <tbody>
+                  <tr class="align-top">
+                    <td class="w-[46px] text-slate-500 font-medium pr-0.5 whitespace-nowrap">No. Peserta</td>
+                    <td class="w-[4px] text-slate-500 font-bold">:</td>
+                    <td class="font-bold font-mono text-slate-900">${p.noPeserta}</td>
+                  </tr>
+                  <tr class="align-top">
+                    <td class="text-slate-500 font-medium pr-0.5 whitespace-nowrap">NISN</td>
+                    <td class="text-slate-500 font-bold">:</td>
+                    <td class="font-mono font-semibold">${p.nisn}</td>
+                  </tr>
+                  <tr class="align-top">
+                    <td class="text-slate-500 font-medium pr-0.5 whitespace-nowrap">Nama Siswa</td>
+                    <td class="text-slate-500 font-bold">:</td>
+                    <td class="font-extrabold text-slate-900 uppercase break-words" style="word-break:break-word;line-height:1.15;">${p.nama}</td>
+                  </tr>
+                  <tr class="align-top">
+                    <td class="text-slate-500 font-medium pr-0.5 whitespace-nowrap">Kelas</td>
+                    <td class="text-slate-500 font-bold">:</td>
+                    <td class="font-semibold">${p.kelas}</td>
+                  </tr>
+                  <tr class="align-top">
+                    <td class="text-slate-500 font-medium pr-0.5 whitespace-nowrap">Ruang/Sesi</td>
+                    <td class="text-slate-500 font-bold">:</td>
+                    <td class="break-words">${p.ruang || '-'} / ${p.sesi || '-'}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
             <div class="shrink-0 flex flex-col items-center justify-center">
-              <div id="qrcode-${cardIndex}" class="w-[12.5mm] h-[12.5mm] bg-white p-0.5 border border-slate-200 rounded flex items-center justify-center"></div>
+              <div id="qrcode-${cardIndex}" class="w-[12mm] h-[12mm] bg-white p-0.5 border border-slate-200 rounded flex items-center justify-center"></div>
               <span class="text-[6px] text-slate-400 mt-0.5 font-mono">VALID</span>
             </div>
           </div>
