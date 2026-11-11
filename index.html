@@ -847,24 +847,26 @@ service cloud.firestore {
     </nav>
   </div>
 
-  <!-- MODAL TAMBAH / EDIT PESERTA & KAMERA -->
-  <div id="pesertaModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 no-print overflow-y-auto">
-    <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 my-8">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-200">
-        <h3 id="modalPesertaTitle" class="text-base font-extrabold font-display text-slate-900">Tambah Peserta Baru</h3>
+  <!-- MODAL TAMBAH / EDIT PESERTA & KAMERA (DIPERBAIKI AGAR TIDAK TERPOTONG DI LAYAR HP) -->
+  <div id="pesertaModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-start sm:items-center justify-center p-2.5 sm:p-4 no-print overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-xl w-full shadow-2xl border border-slate-200 my-auto max-h-[92dvh] flex flex-col overflow-hidden">
+      <!-- Sticky Header Modal -->
+      <div class="flex items-center justify-between px-5 py-3.5 border-b border-slate-200 bg-white shrink-0 z-10">
+        <h3 id="modalPesertaTitle" class="text-sm sm:text-base font-extrabold font-display text-slate-900">Tambah Peserta Baru</h3>
         <button type="button" onclick="closePesertaModal(event)" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
 
-      <form id="formPeserta" onsubmit="savePesertaForm(event)" class="space-y-4 mt-4">
+      <!-- Scrollable Body Form -->
+      <form id="formPeserta" onsubmit="savePesertaForm(event)" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
         <input type="hidden" id="editPesertaId" />
 
-        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row items-center gap-4">
-          <div class="relative w-24 h-32 rounded-xl bg-white border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
+        <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row items-center gap-3.5 sm:gap-4">
+          <div id="photoPreviewWrapper" class="relative w-20 h-28 sm:w-24 sm:h-32 rounded-xl bg-white border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
             <img id="photoPreviewImg" src="" alt="Pas Foto" class="hidden w-full h-full object-cover" />
             <div id="photoPlaceholderText" class="text-center p-2">
-              <i data-lucide="user" class="w-7 h-7 text-slate-300 mx-auto"></i>
+              <i data-lucide="user" class="w-6 h-6 sm:w-7 sm:h-7 text-slate-300 mx-auto"></i>
               <span class="block text-[10px] text-slate-400 font-medium mt-1">Pas Foto 3x4</span>
             </div>
           </div>
@@ -896,14 +898,15 @@ service cloud.firestore {
               </button>
             </div>
 
-            <div id="webcamContainer" class="hidden mt-3 p-3 rounded-2xl bg-slate-900 text-white space-y-2.5">
-              <div id="webcamStatusText" class="text-[11px] text-amber-300 font-medium text-center">Menyiapkan kamera perangkat...</div>
-              <div class="relative w-44 h-56 mx-auto rounded-xl overflow-hidden border-2 border-brand-400 bg-black">
+            <!-- Area Kamera Live (Responsif di HP) -->
+            <div id="webcamContainer" class="hidden mt-2.5 p-3 rounded-2xl bg-slate-900 text-white space-y-2.5">
+              <div id="webcamStatusText" class="text-[11px] text-amber-300 font-medium text-center leading-snug">Menyiapkan kamera perangkat...</div>
+              <div class="relative w-36 h-48 sm:w-44 sm:h-56 mx-auto rounded-xl overflow-hidden border-2 border-brand-400 bg-black shadow-inner">
                 <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover"></video>
-                <div class="absolute inset-3 border border-dashed border-white/50 rounded-lg pointer-events-none"></div>
+                <div class="absolute inset-2.5 border border-dashed border-white/60 rounded-lg pointer-events-none"></div>
               </div>
-              <div class="flex flex-wrap items-center justify-center gap-2">
-                <button type="button" onclick="takeWebcamSnapshot(event)" class="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold flex items-center gap-1.5">
+              <div class="flex flex-wrap items-center justify-center gap-2 pt-0.5">
+                <button type="button" onclick="takeWebcamSnapshot(event)" class="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold flex items-center gap-1.5 shadow">
                   <i data-lucide="aperture" class="w-3.5 h-3.5"></i>
                   <span>Jepret Foto</span>
                 </button>
@@ -960,7 +963,8 @@ service cloud.firestore {
           </div>
         </div>
 
-        <div class="pt-3 border-t border-slate-200 flex items-center justify-end gap-2">
+        <!-- Sticky Footer Tombol Simpan di Dalam Form -->
+        <div class="pt-3 border-t border-slate-200 flex items-center justify-end gap-2 sticky bottom-0 bg-white pb-1">
           <button type="button" onclick="closePesertaModal(event)" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100">Batal</button>
           <button type="submit" class="px-5 py-2 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold shadow-sm">Simpan Data</button>
         </div>
@@ -969,8 +973,8 @@ service cloud.firestore {
   </div>
 
   <!-- MODAL KENAIKAN KELAS MASSAL & OTOMATIS -->
-  <div id="promotionModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 no-print overflow-y-auto">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 my-8 space-y-4">
+  <div id="promotionModal" class="hidden fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-start sm:items-center justify-center p-2.5 sm:p-4 no-print overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 my-auto max-h-[92dvh] overflow-y-auto space-y-4">
       <div class="flex items-center justify-between pb-3 border-b border-slate-200">
         <div class="flex items-center gap-2.5">
           <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center">
@@ -1114,16 +1118,16 @@ service cloud.firestore {
   <!-- SCRIPT UTAMA -->
   <script type="module">
     // KONFIGURASI APLIKASI
-    const IS_PREVIEW = false; // Ubah menjadi false SAAT DEPLOY / PUBLISH agar terhubung murni ke Firebase
+    const IS_PREVIEW = true; // Ubah menjadi false SAAT DEPLOY / PUBLISH agar terhubung murni ke Firebase
 
     // PASTE FIREBASE CONFIG ANDA DI SINI
     const firebaseConfig = {
-  apiKey: "AIzaSyBixLR0rr62F76nQ8AiDfWNQOQnD2hHImQ",
-  authDomain: "smartcard-aa053.firebaseapp.com",
-  projectId: "smartcard-aa053",
-  storageBucket: "smartcard-aa053.firebasestorage.app",
-  messagingSenderId: "1074528157861",
-  appId: "1:1074528157861:web:3bece7d8a8ee8b26d28d4c"
+      apiKey: "API_KEY_ANDA",
+      authDomain: "PROJECT_ID.firebaseapp.com",
+      projectId: "PROJECT_ID",
+      storageBucket: "PROJECT_ID.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
     };
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -1960,7 +1964,8 @@ service cloud.firestore {
       stopWebcamStream();
       const modal = document.getElementById('pesertaModal');
       const title = document.getElementById('modalPesertaTitle');
-      document.getElementById('formPeserta').reset();
+      const formEl = document.getElementById('formPeserta');
+      formEl.reset();
       document.getElementById('editPesertaId').value = editId || '';
 
       if (editId) {
@@ -1984,6 +1989,7 @@ service cloud.firestore {
       }
 
       modal.classList.remove('hidden');
+      setTimeout(() => { formEl.scrollTop = 0; }, 20);
       if (window.lucide) lucide.createIcons();
     };
 
@@ -2083,6 +2089,10 @@ service cloud.firestore {
       container.classList.remove('hidden');
       statusText.textContent = "Meminta izin akses kamera perangkat...";
 
+      setTimeout(() => {
+        container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 60);
+
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         statusText.textContent = "Browser tidak mendukung live webcam di mode ini. Gunakan tombol 'Kamera HP / File' atau 'Upload Gambar'.";
         showToast("Gunakan tombol 'Kamera HP / File' untuk mengambil foto.", "info");
@@ -2135,6 +2145,10 @@ service cloud.firestore {
       if (dataUrl) {
         setPhotoPreview(dataUrl);
         stopWebcamStream();
+        const previewWrap = document.getElementById('photoPreviewWrapper');
+        if (previewWrap) {
+          setTimeout(() => previewWrap.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50);
+        }
         showToast("Foto berhasil dijepret dari kamera!", "success");
       }
     };
