@@ -421,13 +421,16 @@
             </div>
 
             <div class="flex flex-wrap items-center gap-2">
-              <button type="button" id="btnBulkDeleteSelected" onclick="openBulkDeleteModal('selected')" class="hidden px-3 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition">
+              <button type="button" id="btnBulkDeleteSelected" onclick="openBulkDeleteModal('selected')" class="hidden px-3 py-2 bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition cursor-pointer">
                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Hapus Terpilih (<span id="selectedCountBadge">0</span>)
               </button>
-              <button type="button" onclick="openBulkDeleteModal('all')" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition">
+              <button type="button" onclick="openKenaikanKelasModal()" class="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition cursor-pointer">
+                <i data-lucide="trending-up" class="w-4 h-4"></i> Kenaikan Kelas
+              </button>
+              <button type="button" onclick="openBulkDeleteModal('all')" class="px-3 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition cursor-pointer">
                 <i data-lucide="trash" class="w-3.5 h-3.5"></i> Hapus Semua
               </button>
-              <button type="button" onclick="openPesertaModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition">
+              <button type="button" onclick="openPesertaModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition cursor-pointer">
                 <i data-lucide="plus" class="w-4 h-4"></i> Tambah Peserta
               </button>
             </div>
@@ -885,19 +888,140 @@ service cloud.firestore {
     </div>
   </div>
 
+  <!-- ================= MODAL KENAIKAN KELAS MASSAL & OTOMATIS ================= -->
+  <div id="kenaikanKelasModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-100 space-y-4 max-h-[92vh] overflow-y-auto" onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+            <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-slate-900 text-base font-display">Menu Kenaikan Kelas & Tahun Pelajaran Baru</h3>
+            <p class="text-[11px] text-slate-500">Naikkan tingkat kelas & sesuaikan ruang ujian siswa secara serentak tanpa edit manual satu per satu.</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeKenaikanKelasModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Tab Mode Kenaikan Kelas -->
+      <div class="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 rounded-xl text-xs font-bold">
+        <button type="button" id="tabNaikAutoBtn" onclick="switchKenaikanTab('auto')" class="py-2 px-3 rounded-lg bg-white text-emerald-700 shadow-2xs transition flex items-center justify-center gap-1.5">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Mode 1: Otomatis Semua Tingkat (1 Klik)
+        </button>
+        <button type="button" id="tabNaikCustomBtn" onclick="switchKenaikanTab('custom')" class="py-2 px-3 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5">
+          <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5"></i> Mode 2: Pindah Kelas Spesifik / Terpilih
+        </button>
+      </div>
+
+      <!-- MODE 1: KENAIKAN KELAS OTOMATIS SEMUA TINGKAT -->
+      <div id="panelKenaikanAuto" class="space-y-4 text-xs">
+        <div class="p-3.5 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Perlakuan Siswa Tingkat Akhir (Kelas 6 / 9 / 12 / IX / XII):</label>
+              <select id="naikFinalAction" onchange="renderKenaikanPreview()" class="w-full p-2 border border-slate-200 rounded-lg bg-white text-slate-800 font-semibold">
+                <option value="ALUMNI">Ubah Kelas menjadi "LULUS (Alumni)"</option>
+                <option value="DELETE">Luluskan & Hapus dari Daftar Peserta Aktif</option>
+                <option value="KEEP">Biarkan Tetap di Kelas Semula</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Perbarui Tahun Pelajaran (Opsional):</label>
+              <input type="text" id="naikTahunAjaranInput" placeholder="Contoh: Tahun Pelajaran 2027/2028 (Semester Ganjil)" class="w-full p-2 border border-slate-200 rounded-lg bg-white text-slate-800">
+            </div>
+          </div>
+
+          <label class="flex items-center gap-2 cursor-pointer select-none pt-1">
+            <input type="checkbox" id="naikAutoSyncRuang" checked onchange="renderKenaikanPreview()" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+            <span class="font-semibold text-slate-700">Sesuaikan Nama Ruang Otomatis <span class="text-slate-500 font-normal">(Contoh: <code>Kelas 1</code> &rarr; <code>Kelas 2</code>, <code>Ruang Kelas 2</code> &rarr; <code>Ruang Kelas 3</code>)</span></span>
+          </label>
+        </div>
+
+        <!-- Tabel Pratinjau Simulasi Kenaikan Kelas -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <h4 class="font-bold text-slate-800">Pratinjau Simulasi Perubahan Kelas & Ruang:</h4>
+            <span id="naikTotalAffectedBadge" class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[11px]">0 Siswa</span>
+          </div>
+          <div class="border border-slate-200 rounded-xl overflow-hidden max-h-56 overflow-y-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
+                  <th class="p-2.5">Kelas Saat Ini</th>
+                  <th class="p-2.5">Jumlah Siswa</th>
+                  <th class="p-2.5">Perubahan Kelas Baru</th>
+                  <th class="p-2.5">Contoh Perubahan Ruang</th>
+                </tr>
+              </thead>
+              <tbody id="kenaikanPreviewBody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+          <button type="button" onclick="closeKenaikanKelasModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl">Batal</button>
+          <button type="button" id="btnExecAutoPromote" onclick="executeAutoKenaikanKelas()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-sm flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="check-circle-2" class="w-4 h-4"></i> Proses Kenaikan Kelas Sekarang
+          </button>
+        </div>
+      </div>
+
+      <!-- MODE 2: PINDAH / NAIKKAN KELAS SPESIFIK ATAU TERPILIH -->
+      <div id="panelKenaikanCustom" class="hidden space-y-4 text-xs">
+        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">Sumber Siswa yang Akan Dinaikkan / Dipindah:</label>
+            <select id="customSourceMode" onchange="updateCustomPromoteInfo()" class="w-full p-2 border border-slate-200 rounded-lg bg-white text-slate-800 font-semibold">
+              <option value="BY_CLASS">Berdasarkan Kelas Tertentu</option>
+              <option value="BY_SELECTED">Berdasarkan Siswa yang Dicentang di Tabel</option>
+            </select>
+          </div>
+
+          <div id="customFromClassWrap">
+            <label class="block font-bold text-slate-700 mb-1">Pilih Kelas Asal:</label>
+            <select id="customFromClassSelect" onchange="updateCustomPromoteInfo()" class="w-full p-2 border border-slate-200 rounded-lg bg-white text-slate-800"></select>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Kelas Tujuan Baru *</label>
+              <input type="text" id="customTargetKelas" placeholder="Contoh: 2 / 3A / VIII / XI MIPA 1" class="w-full p-2 border border-slate-200 rounded-lg bg-white font-bold">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">Ruang Ujian Baru (Kosongkan jika tetap)</label>
+              <input type="text" id="customTargetRuang" placeholder="Contoh: Kelas 2 / Ruang 05" class="w-full p-2 border border-slate-200 rounded-lg bg-white">
+            </div>
+          </div>
+
+          <p id="customPromoteSummaryText" class="text-[11px] text-brand-700 font-semibold bg-brand-50 px-3 py-2 rounded-lg border border-brand-100"></p>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex justify-end gap-2">
+          <button type="button" onclick="closeKenaikanKelasModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl">Batal</button>
+          <button type="button" onclick="executeCustomKenaikanKelas()" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl shadow-sm flex items-center gap-1.5 cursor-pointer">
+            <i data-lucide="arrow-right-circle" class="w-4 h-4"></i> Terapkan Pindah Kelas
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ================= SCRIPT APLIKASI UTAMA (HYBRID FIREBASE SDK) ================= -->
   <script type="module">
     // SAKLAR DUAL-MODE: true = Mode Pratinjau Instan (Data Dummy), false = Mode Produksi Firebase Murni
-    const IS_PREVIEW = false;
+    const IS_PREVIEW = true;
 
     // PASTE FIREBASE CONFIG ANDA DI SINI (Digunakan saat IS_PREVIEW = false)
     const firebaseConfig = {
-  apiKey: "AIzaSyBixLR0rr62F76nQ8AiDfWNQOQnD2hHImQ",
-  authDomain: "smartcard-aa053.firebaseapp.com",
-  projectId: "smartcard-aa053",
-  storageBucket: "smartcard-aa053.firebasestorage.app",
-  messagingSenderId: "1074528157861",
-  appId: "1:1074528157861:web:3bece7d8a8ee8b26d28d4c"
+      apiKey: "AIzaSyD-CONTOH_API_KEY_ANDA_GANTI",
+      authDomain: "smartcard-sekolah.firebaseapp.com",
+      projectId: "smartcard-sekolah",
+      storageBucket: "smartcard-sekolah.appspot.com",
+      messagingSenderId: "1234567890",
+      appId: "1:123456:web:abcdef"
     };
 
     // Import Firebase SDKs
@@ -939,30 +1063,66 @@ service cloud.firestore {
       ttdUrl: ""
     };
 
-    // 2 Data Dummy Awal (Hanya dimuat jika IS_PREVIEW === true)
+    // Data Dummy Awal Sesuai Tampilan Pengguna (Hanya dimuat jika IS_PREVIEW === true)
     const INITIAL_DUMMY_PESERTA = [
       {
         id: "p-1",
-        nisn: "0081234567",
-        noPeserta: "01-001-001-9",
-        nama: "Ahmad Rizky Pratama",
-        kelas: "XII MIPA 1",
+        nisn: "3191443486",
+        noPeserta: "1411",
+        nama: "AKMAL LATHIF AL BUCHORI",
+        kelas: "1",
         jenisUjian: "SAS",
-        ruang: "Lab Komputer 01",
-        sesi: "Sesi 1 (07.30 - 09.30)",
-        dob: "12-05-2008",
+        ruang: "Kelas 1",
+        sesi: "-",
+        dob: "26-09-2019",
         fotoUrl: ""
       },
       {
         id: "p-2",
-        nisn: "0087654321",
-        noPeserta: "01-001-002-8",
-        nama: "Siti Nurhaliza Zahra",
-        kelas: "XII MIPA 2",
+        nisn: "3199796609",
+        noPeserta: "1412",
+        nama: "ALGHAISAN HAVIS TABRANI",
+        kelas: "1",
         jenisUjian: "SAS",
-        ruang: "Ruang 04",
-        sesi: "Sesi 2 (10.00 - 12.00)",
-        dob: "20-09-2008",
+        ruang: "Kelas 1",
+        sesi: "-",
+        dob: "14-11-2019",
+        fotoUrl: ""
+      },
+      {
+        id: "p-3",
+        nisn: "3186638730",
+        noPeserta: "1397",
+        nama: "ADHISTY CANTIKA JULIADI",
+        kelas: "2",
+        jenisUjian: "SAS",
+        ruang: "Kelas 2",
+        sesi: "-",
+        dob: "30-12-2018",
+        fotoUrl: ""
+      },
+      {
+        id: "p-4",
+        nisn: "3182206848",
+        noPeserta: "1398",
+        nama: "AMRI GULFAM QADDAFI",
+        kelas: "2",
+        jenisUjian: "SAS",
+        ruang: "Kelas 2",
+        sesi: "-",
+        dob: "16-08-2018",
+        fotoUrl: ""
+      },
+      {
+        id: "p-5",
+        nisn: "0081234567",
+        noPeserta: "01-001-001-9",
+        nama: "AHMAD RIZKY PRATAMA",
+        kelas: "6",
+        jenisUjian: "SAS",
+        ruang: "Kelas 6",
+        sesi: "Sesi 1 (07.30 - 09.30)",
+        dob: "12-05-2008",
         fotoUrl: ""
       }
     ];
@@ -1441,6 +1601,383 @@ service cloud.firestore {
       selectedPesertaIds.clear();
       selectedPesertaIds.add(id);
       openBulkDeleteModal('selected');
+    };
+
+    // --- FITUR KENAIKAN KELAS MASSAL & OTOMATIS ---
+    function computeNextClassInfo(rawKelas) {
+      const str = String(rawKelas || '').trim();
+      if (!str) return { nextKelas: str, isFinal: false, oldNum: null, newNum: null };
+
+      if (/lulus|alumni/i.test(str)) {
+        return { nextKelas: str, isFinal: false, oldNum: null, newNum: null };
+      }
+
+      // Cek Angka Romawi terlebih dahulu (XII, XI, X, IX, VIII, VII, VI, V, IV, III, II, I)
+      const romanMap = [
+        { regex: /\bXII\b/i, next: 'LULUS', isFinal: true, oldToken: 'XII', newToken: 'LULUS' },
+        { regex: /\bXI\b/i, next: 'XII', isFinal: false, oldToken: 'XI', newToken: 'XII' },
+        { regex: /\bX\b/i, next: 'XI', isFinal: false, oldToken: 'X', newToken: 'XI' },
+        { regex: /\bIX\b/i, next: 'LULUS', isFinal: true, oldToken: 'IX', newToken: 'LULUS' },
+        { regex: /\bVIII\b/i, next: 'IX', isFinal: false, oldToken: 'VIII', newToken: 'IX' },
+        { regex: /\bVII\b/i, next: 'VIII', isFinal: false, oldToken: 'VII', newToken: 'VIII' },
+        { regex: /\bVI\b/i, next: 'LULUS', isFinal: true, oldToken: 'VI', newToken: 'LULUS' },
+        { regex: /\bV\b/i, next: 'VI', isFinal: false, oldToken: 'V', newToken: 'VI' },
+        { regex: /\bIV\b/i, next: 'V', isFinal: false, oldToken: 'IV', newToken: 'V' },
+        { regex: /\bIII\b/i, next: 'IV', isFinal: false, oldToken: 'III', newToken: 'IV' },
+        { regex: /\bII\b/i, next: 'III', isFinal: false, oldToken: 'II', newToken: 'III' },
+        { regex: /\bI\b/i, next: 'II', isFinal: false, oldToken: 'I', newToken: 'II' }
+      ];
+
+      for (const item of romanMap) {
+        if (item.regex.test(str)) {
+          if (item.isFinal) {
+            return { nextKelas: 'LULUS (Alumni)', isFinal: true, oldNum: item.oldToken, newNum: item.newToken };
+          }
+          return {
+            nextKelas: str.replace(item.regex, item.next),
+            isFinal: false,
+            oldNum: item.oldToken,
+            newNum: item.newToken
+          };
+        }
+      }
+
+      // Cek Angka Arab (1 s/d 12, termasuk format seperti "1", "1A", "Kelas 2", "7B")
+      const numMatch = str.match(/(^|\D)(12|11|10|[1-9])(\D|$)/);
+      if (numMatch) {
+        const num = parseInt(numMatch[2], 10);
+        const isFinalGrade = (num === 6 || num === 9 || num === 12);
+        if (isFinalGrade) {
+          return { nextKelas: 'LULUS (Alumni)', isFinal: true, oldNum: String(num), newNum: 'LULUS' };
+        }
+        const nextNum = num + 1;
+        const prefix = numMatch[1];
+        const suffix = numMatch[3];
+        const replaced = str.replace(/(^|\D)(12|11|10|[1-9])(\D|$)/, `${prefix}${nextNum}${suffix}`);
+        return {
+          nextKelas: replaced,
+          isFinal: false,
+          oldNum: String(num),
+          newNum: String(nextNum)
+        };
+      }
+
+      return { nextKelas: str, isFinal: false, oldNum: null, newNum: null };
+    }
+
+    function computeNextRuangString(rawRuang, oldKelas, nextKelas, oldNum, newNum) {
+      const ruang = String(rawRuang || '').trim();
+      if (!ruang) return ruang;
+      if (newNum === 'LULUS') return 'Alumni';
+
+      // Jika ruang persis sama dengan nama kelas lama
+      if (ruang.toLowerCase() === String(oldKelas).trim().toLowerCase()) {
+        return nextKelas;
+      }
+
+      // Jika ruang mengandung kata "Kelas <oldKelas>" atau "Ruang <oldKelas>"
+      if (oldNum && newNum) {
+        const escapedOld = oldNum.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const pattern = new RegExp(`(\\b(?:kelas|ruang|rombel)\\s*)${escapedOld}(\\b|[a-zA-Z])`, 'i');
+        if (pattern.test(ruang)) {
+          return ruang.replace(pattern, `$1${newNum}$2`);
+        }
+      }
+
+      return ruang;
+    }
+
+    window.openKenaikanKelasModal = function() {
+      if (pesertaList.length === 0) {
+        showToast("Belum ada data peserta untuk dinaikkan kelasnya.", "error");
+        return;
+      }
+
+      // Isi otomatis saran Tahun Pelajaran berikutnya
+      const currentTa = schoolConfig.tahunAjaran || "Tahun Pelajaran 2026/2027 (Semester Ganjil)";
+      const taMatch = currentTa.match(/(\d{4})\/(\d{4})/);
+      const taInput = document.getElementById('naikTahunAjaranInput');
+      if (taInput) {
+        if (taMatch) {
+          const y1 = parseInt(taMatch[1], 10) + 1;
+          const y2 = parseInt(taMatch[2], 10) + 1;
+          taInput.value = currentTa.replace(/\d{4}\/\d{4}/, `${y1}/${y2}`);
+        } else {
+          taInput.value = currentTa;
+        }
+      }
+
+      // Populate dropdown kelas asal pada Mode 2
+      const kelasSet = [...new Set(pesertaList.map(p => p.kelas).filter(Boolean))].sort();
+      const fromSelect = document.getElementById('customFromClassSelect');
+      if (fromSelect) {
+        fromSelect.innerHTML = '';
+        kelasSet.forEach(k => {
+          const count = pesertaList.filter(p => p.kelas === k).length;
+          const opt = document.createElement('option');
+          opt.value = k;
+          opt.textContent = `Kelas ${k} (${count} siswa)`;
+          fromSelect.appendChild(opt);
+        });
+      }
+
+      switchKenaikanTab('auto');
+      renderKenaikanPreview();
+      updateCustomPromoteInfo();
+      document.getElementById('kenaikanKelasModal').classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    };
+
+    window.closeKenaikanKelasModal = function() {
+      document.getElementById('kenaikanKelasModal').classList.add('hidden');
+    };
+
+    window.switchKenaikanTab = function(mode) {
+      const panelAuto = document.getElementById('panelKenaikanAuto');
+      const panelCustom = document.getElementById('panelKenaikanCustom');
+      const btnAuto = document.getElementById('tabNaikAutoBtn');
+      const btnCustom = document.getElementById('tabNaikCustomBtn');
+
+      if (mode === 'auto') {
+        panelAuto.classList.remove('hidden');
+        panelCustom.classList.add('hidden');
+        btnAuto.className = "py-2 px-3 rounded-lg bg-white text-emerald-700 shadow-2xs transition flex items-center justify-center gap-1.5";
+        btnCustom.className = "py-2 px-3 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5";
+        renderKenaikanPreview();
+      } else {
+        panelAuto.classList.add('hidden');
+        panelCustom.classList.remove('hidden');
+        btnCustom.className = "py-2 px-3 rounded-lg bg-white text-brand-700 shadow-2xs transition flex items-center justify-center gap-1.5";
+        btnAuto.className = "py-2 px-3 rounded-lg text-slate-600 hover:text-slate-900 transition flex items-center justify-center gap-1.5";
+        updateCustomPromoteInfo();
+      }
+    };
+
+    window.renderKenaikanPreview = function() {
+      const tbody = document.getElementById('kenaikanPreviewBody');
+      if (!tbody) return;
+
+      const finalAction = document.getElementById('naikFinalAction')?.value || 'ALUMNI';
+      const syncRuang = document.getElementById('naikAutoSyncRuang')?.checked ?? true;
+
+      const groups = {};
+      pesertaList.forEach(p => {
+        const k = p.kelas || '-';
+        if (!groups[k]) {
+          groups[k] = { count: 0, sampleRuang: p.ruang || '-' };
+        }
+        groups[k].count++;
+      });
+
+      const sortedKeys = Object.keys(groups).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+      tbody.innerHTML = '';
+      let totalAffected = 0;
+
+      sortedKeys.forEach(k => {
+        const grp = groups[k];
+        const info = computeNextClassInfo(k);
+        let targetLabel = info.nextKelas;
+        let badgeClass = "bg-emerald-100 text-emerald-800";
+
+        if (info.isFinal) {
+          if (finalAction === 'DELETE') {
+            targetLabel = "Lulus & Dihapus dari Daftar Aktif";
+            badgeClass = "bg-rose-100 text-rose-700";
+          } else if (finalAction === 'KEEP') {
+            targetLabel = `${k} (Tetap)`;
+            badgeClass = "bg-slate-100 text-slate-600";
+          } else {
+            targetLabel = "LULUS (Alumni)";
+            badgeClass = "bg-amber-100 text-amber-800";
+          }
+        } else if (info.nextKelas !== k) {
+          totalAffected += grp.count;
+        }
+
+        if (info.isFinal && finalAction !== 'KEEP') {
+          totalAffected += grp.count;
+        }
+
+        const sampleNextRuang = syncRuang
+          ? computeNextRuangString(grp.sampleRuang, k, info.nextKelas, info.oldNum, info.newNum)
+          : grp.sampleRuang;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="p-2.5 font-bold text-slate-800">Kelas ${escapeHtmlStr(k)}</td>
+          <td class="p-2.5 font-mono text-slate-600">${grp.count} Siswa</td>
+          <td class="p-2.5">
+            <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${badgeClass}">
+              ${escapeHtmlStr(k)} &rarr; ${escapeHtmlStr(targetLabel)}
+            </span>
+          </td>
+          <td class="p-2.5 text-slate-600 font-mono text-[11px]">
+            ${escapeHtmlStr(grp.sampleRuang)} &rarr; <b class="text-slate-900">${escapeHtmlStr(sampleNextRuang)}</b>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      const badge = document.getElementById('naikTotalAffectedBadge');
+      if (badge) badge.textContent = `${totalAffected} Siswa Diproses`;
+    };
+
+    window.executeAutoKenaikanKelas = async function() {
+      const finalAction = document.getElementById('naikFinalAction')?.value || 'ALUMNI';
+      const syncRuang = document.getElementById('naikAutoSyncRuang')?.checked ?? true;
+      const newTa = document.getElementById('naikTahunAjaranInput')?.value.trim() || '';
+
+      const updatedList = [];
+      const toDeleteIds = [];
+      const toUpdateItems = [];
+
+      for (const p of pesertaList) {
+        const info = computeNextClassInfo(p.kelas);
+        if (info.isFinal) {
+          if (finalAction === 'DELETE') {
+            toDeleteIds.push(p.id);
+            continue;
+          } else if (finalAction === 'ALUMNI') {
+            const updatedItem = {
+              ...p,
+              kelas: 'LULUS (Alumni)',
+              ruang: syncRuang ? 'Alumni' : p.ruang
+            };
+            updatedList.push(updatedItem);
+            toUpdateItems.push(updatedItem);
+          } else {
+            updatedList.push(p);
+          }
+        } else {
+          const nextRuang = syncRuang
+            ? computeNextRuangString(p.ruang, p.kelas, info.nextKelas, info.oldNum, info.newNum)
+            : p.ruang;
+          const updatedItem = {
+            ...p,
+            kelas: info.nextKelas,
+            ruang: nextRuang
+          };
+          updatedList.push(updatedItem);
+          toUpdateItems.push(updatedItem);
+        }
+      }
+
+      if (newTa) {
+        schoolConfig.tahunAjaran = newTa;
+        const cfgTaEl = document.getElementById('cfgTahunAjaran');
+        if (cfgTaEl) cfgTaEl.value = newTa;
+      }
+
+      if (!IS_PREVIEW && db) {
+        try {
+          for (const id of toDeleteIds) {
+            await deleteDoc(doc(db, "peserta", id));
+          }
+          for (const item of toUpdateItems) {
+            await setDoc(doc(db, "peserta", item.id), item);
+          }
+          if (newTa) {
+            await setDoc(doc(db, "pengaturan", "sekolah"), schoolConfig);
+          }
+        } catch (err) {
+          showToast("Gagal menyimpan kenaikan kelas ke Firestore: " + err.message, "error");
+          return;
+        }
+      }
+
+      pesertaList = updatedList;
+      selectedPesertaIds.clear();
+      closeKenaikanKelasModal();
+      refreshAllUI();
+      showToast(`Kenaikan kelas otomatis berhasil! ${toUpdateItems.length} siswa dinaikkan${toDeleteIds.length ? ` & ${toDeleteIds.length} siswa diluluskan` : ''}.`);
+    };
+
+    window.updateCustomPromoteInfo = function() {
+      const mode = document.getElementById('customSourceMode')?.value || 'BY_CLASS';
+      const wrap = document.getElementById('customFromClassWrap');
+      const fromKelas = document.getElementById('customFromClassSelect')?.value || '';
+      const summaryEl = document.getElementById('customPromoteSummaryText');
+      const targetKelasInput = document.getElementById('customTargetKelas');
+      const targetRuangInput = document.getElementById('customTargetRuang');
+
+      if (mode === 'BY_SELECTED') {
+        if (wrap) wrap.classList.add('hidden');
+        if (summaryEl) {
+          summaryEl.textContent = `${selectedPesertaIds.size} siswa yang dicentang pada tabel akan dipindahkan ke kelas tujuan.`;
+        }
+      } else {
+        if (wrap) wrap.classList.remove('hidden');
+        const count = pesertaList.filter(p => p.kelas === fromKelas).length;
+        const info = computeNextClassInfo(fromKelas);
+        if (targetKelasInput && !targetKelasInput.value && info.nextKelas) {
+          targetKelasInput.value = info.nextKelas;
+        }
+        if (targetRuangInput && !targetRuangInput.value && info.nextKelas && !info.isFinal) {
+          targetRuangInput.value = `Kelas ${info.nextKelas}`;
+        }
+        if (summaryEl) {
+          summaryEl.textContent = `${count} siswa dari Kelas ${fromKelas || '-'} siap dipindahkan ke kelas baru.`;
+        }
+      }
+    };
+
+    window.executeCustomKenaikanKelas = async function() {
+      const mode = document.getElementById('customSourceMode')?.value || 'BY_CLASS';
+      const fromKelas = document.getElementById('customFromClassSelect')?.value || '';
+      const targetKelas = document.getElementById('customTargetKelas')?.value.trim() || '';
+      const targetRuang = document.getElementById('customTargetRuang')?.value.trim() || '';
+
+      if (!targetKelas) {
+        showToast("Masukkan Kelas Tujuan Baru terlebih dahulu!", "error");
+        return;
+      }
+
+      if (mode === 'BY_SELECTED' && selectedPesertaIds.size === 0) {
+        showToast("Belum ada siswa yang dicentang di tabel peserta!", "error");
+        return;
+      }
+
+      let affectedCount = 0;
+      const toUpdate = [];
+
+      pesertaList = pesertaList.map(p => {
+        const isMatch = (mode === 'BY_SELECTED')
+          ? selectedPesertaIds.has(p.id)
+          : (p.kelas === fromKelas);
+
+        if (!isMatch) return p;
+        affectedCount++;
+        const updated = {
+          ...p,
+          kelas: targetKelas,
+          ruang: targetRuang ? targetRuang : p.ruang
+        };
+        toUpdate.push(updated);
+        return updated;
+      });
+
+      if (affectedCount === 0) {
+        showToast("Tidak ada siswa yang cocok dengan kriteria sumber.", "error");
+        return;
+      }
+
+      if (!IS_PREVIEW && db) {
+        try {
+          for (const item of toUpdate) {
+            await setDoc(doc(db, "peserta", item.id), item);
+          }
+        } catch (err) {
+          showToast("Gagal memperbarui ke Firestore: " + err.message, "error");
+          return;
+        }
+      }
+
+      selectedPesertaIds.clear();
+      document.getElementById('customTargetKelas').value = '';
+      document.getElementById('customTargetRuang').value = '';
+      closeKenaikanKelasModal();
+      refreshAllUI();
+      showToast(`Berhasil memindahkan ${affectedCount} siswa ke Kelas ${targetKelas}!`);
     };
 
     // --- Modal Tambah/Edit Peserta & Kamera Stabil (Tidak Menutup Form/Aplikasi) ---
